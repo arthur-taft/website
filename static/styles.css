@@ -3,6 +3,11 @@
  * Copyright (c) 2025 Arthur Taft. All Rights Reserved.
 */
 
+@font-face {
+    font-family: "Liberation Mono";
+    src: url("LiberationMono-Regular.woff2");
+}
+
 :root {
     /* COLORS */
     --rosewater: #f5e0dc;
@@ -104,6 +109,11 @@ body {
 
 #title-div .page-title {
     color: var(--green);
+}
+
+#title-div .logo {
+    color: var(--green);
+    margin-right: 5%;
 }
 
 /* Misc container rules (anything goes here) */
