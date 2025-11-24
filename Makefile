@@ -9,6 +9,7 @@ help:
 	@echo 'make build		default target, builds site into ./site'
 	@echo 'make serve		serve site locally using simple python webserver'
 	@echo 'make deploy		deploy site'
+	@echo 'make test		build and serve site'
 	@echo 'make all			build and deploy site'
 	@echo 'make clean		cleans'
 
@@ -29,6 +30,9 @@ build:
 
 .PHONY: all
 all: build deploy
+
+.PHONY: test
+test: build serve
 
 .PHONY: serve
 serve:
