@@ -5,6 +5,10 @@
  *
  */ 
 
+#top-nav .nav-link {
+    font-size: 1.25rem;
+}
+
 #summary, #education, #projects, #experience {
     width: 100%;
     flex: 0 0 100%;
