@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+if (( EUID != 0 )); then
+    echo "Script must be ran as root!"
+    exit 1
+fi
+
+chown -R root:nginx /var/www/arthurtaft.net
+
+find /var/www/arthurtaft.net -type d -exec chmod 755 {} \;
+
+find /var/www/arthurtaft.net -type f -exec chmod 644 {} \;
