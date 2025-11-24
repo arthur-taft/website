@@ -89,6 +89,7 @@ body {
 }
 
 #top-nav .nav-link {
+    font-size: 1.25rem;
     display: block;
     padding: 0.5rem 1rem;
 }
@@ -144,8 +145,8 @@ body {
     margin-bottom: 1%;
 }
 
-#container .link {
-    font-size: 1rem;
+#container .pgp-link:hover {
+    background-color: var(--surface-1);
 }
 
 #footer {
@@ -168,7 +169,6 @@ body {
 
 /* Link rules that enforce theme */
 a {
-    font-size: 1.25rem;
     text-decoration: none;
 }
 
