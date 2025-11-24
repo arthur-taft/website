@@ -145,6 +145,10 @@ body {
     margin-bottom: 1%;
 }
 
+#container .pgp-link {
+    padding: 0.25rem 0.25rem;
+}
+
 #container .pgp-link:hover {
     background-color: var(--surface-1);
 }
