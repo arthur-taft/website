@@ -44,4 +44,4 @@ clean:
 
 .PHONY: deploy
 deploy:
-	rsync -avh --delete ./site/ web:/var/www/arthurtaft.net/
+	rsync -avh --delete ./site/ /var/www/arthurtaft.net/
