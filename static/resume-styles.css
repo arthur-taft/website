@@ -139,3 +139,123 @@
 a {
     font-size: 1rem;
 }
+
+@media (min-width:300px) {
+    #summary .main-subheading {
+        margin-left: 5%;
+    }
+
+    #summary .summary-list {
+        margin-left: 10%;
+        margin-right: 5%;
+    }
+
+    #education .main-subheading {
+        margin-left: 5%;
+    }
+
+    #education .school {
+        margin-left: 7.5%;
+    }
+
+    #degree-info {
+        margin-left: 7.5%;
+        margin-right: 0%;
+    }
+
+    #education .education-list {
+        margin-left: 10%;
+        margin-right: 5%;
+    }
+
+    #projects .main-subheading {
+        margin-left: 5%;
+    }
+
+    #projects .project-title {
+        margin-left: 7.5%;
+    }
+
+    #projects .project-list {
+        margin-left: 10%;
+        margin-right: 5%;
+    }
+
+    #experience .main-subheading {
+        margin-left: 5%;
+    }
+
+    #experience .experience-title {
+        margin-left: 7.5%;
+    }
+
+    #experience .experience-list {
+        margin-left: 10%;
+        margin-right: 5%;
+    }
+
+    #experience-info {
+        margin-left: 7.5%;
+        margin-right: 0%;
+    }
+}
+
+@media (min-width:900px) {
+    #summary .main-subheading {
+        margin-left: 25%;
+    }
+
+    #summary .summary-list {
+        margin-left: 30%;
+        margin-right: 25%;
+    }
+
+    #education .main-subheading {
+        margin-left: 25%;
+    }
+
+    #education .school {
+        margin-left: 27.5%;
+    }
+
+    #degree-info {
+        margin-left: 27.5%;
+        margin-right: 25%;
+    }
+
+    #education .education-list {
+        margin-left: 30%;
+        margin-right: 25%;
+    }
+
+    #projects .main-subheading {
+        margin-left: 25%;
+    }
+
+    #projects .project-title {
+        margin-left: 27.5%;
+    }
+
+    #projects .project-list {
+        margin-left: 30%;
+        margin-right: 25%;
+    }
+
+    #experience .main-subheading {
+        margin-left: 25%;
+    }
+
+    #experience .experience-title {
+        margin-left: 27.5%;
+    }
+
+    #experience .experience-list {
+        margin-left: 30%;
+        margin-right: 25%;
+    }
+
+    #experience-info {
+        margin-left: 27.5%;
+        margin-right: 25%;
+    }
+}
