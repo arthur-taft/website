@@ -10,7 +10,7 @@ help:
 	@echo 'make serve		serve site locally using simple python webserver'
 	@echo 'make deploy		deploy site'
 	@echo 'make test		build and serve site'
-	@echo 'make all			build and deploy site'
+	@echo 'make all 		build and deploy site'
 	@echo 'make clean		cleans'
 
 .PHONY: build
