@@ -36,8 +36,9 @@
             <h1 class="page-title">arthurtaft.net</h1>
         </div>
         <div id="container">
-            <h2 class="main-header">Blog</h2>
-            <div id="blog-list">
+            <h2 id="article-title" class="main-header">Loading...</h2>
+            <p class="main-subheading" id="article-date"></p>
+            <div class="main-text" id="article-content">
 
             </div>
         </div>
@@ -48,54 +49,38 @@
         </div>
     </div>
     <script>
-        // grab conainer div
-        const blogList = document.getElementById('blog-list');
+        const urlParams = new URLSearchParams(window.location.search);
+        const postSlug = urlParams.get('post');
 
-        // get json file containing all blog posts
+        const titleEl = document.getElementById('article-title');
+        const dateEl = document.getElementById('article-date');
+        const contentEl = document.getElementById('article-content');
+
         fetch('/blog/posts.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("HTTP error " + response.status);
+            .then(response => response.json())
+            .then(posts => {
+                const myPost = posts.find(p => p.slug === postSlug);
+
+                if (myPost) {
+                    titleEl.textContent = myPost.title;
+                    dateEl.textContent = myPost.date;
+
+                    return fetch(myPost.content);
+                } else {
+                    throw new Error("Post not found");
                 }
-                return response.json();
             })
-            .then(data => {
-                // sort posts by newest first
-                data.sort((a, b) => {
-                    return new Date(b.date) - new Date(a.date);
-                });
-                renderPosts(data);
+            .then(response => {
+                if (!response.ok) throw new Error("Content file not found");
+                return response.text();
+            })
+            .then(text => {
+                contentEl.innerHTML = text;
             })
             .catch(error => {
-                console.error("something went wrong:", error);
+                titleEl.textContent = "Error Loading Post";
+                contentEl.textContent = "Couldn't find that post." + error;
             });
-
-        function renderPosts(posts) {
-            // clear div to make sure no funky business happens
-            blogList.innerHTML = '';
-
-            posts.forEach(post => {
-                const postDiv = document.createElement('div');
-                const postLink = document.createElement('a');
-                const postTitle = document.createElement('h3');
-                const postDate = document.createElement('p');
-                const postSummary = document.createElement('p');
-
-                postDiv.className = "post-preview";
-
-                postLink.href = "/blog/posts/article.html?post=" + post.slug;
-
-                postTitle.textContent = post.title;
-                postDate.textContent = post.date;
-                postSummary.textContent = post.summary;
-
-                postLink.append(postTitle);
-
-                postDiv.append(postLink, postDate, postSummary);
-
-                blogList.appendChild(postDiv);
-            });
-        }
     </script>
 </body>
 

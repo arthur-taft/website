@@ -15,7 +15,7 @@ help:
 
 .PHONY: build
 build:
-	mkdir -p site site/about site/blog site/contact site/resume site/static
+	mkdir -p site site/about site/blog/posts site/contact site/resume site/static
 	echo -n > site/static/index.html
 	cat static/LiberationMono-Regular.woff2 > site/static/LiberationMono-Regular.woff2
 	cat static/about.html > site/about/index.html
@@ -23,10 +23,14 @@ build:
 	cat static/contact.html > site/contact/index.html
 	cat static/in-progress.gif > site/static/in-progress.gif
 	cat static/index.html > site/index.html
+	cat static/posts.json > site/blog/posts.json
 	cat static/resume-styles.css > site/static/resume-styles.css
 	cat static/resume.html > site/resume/index.html
 	cat static/shell-icon.ico > site/favicon.ico
 	cat static/styles.css > site/static/styles.css
+	cat static/posts/example.txt > site/blog/posts/example.txt
+	cat static/posts/first.txt > site/blog/posts/first.txt
+	cat static/posts/article.html > site/blog/posts/article.html
 
 .PHONY: all
 all: build deploy

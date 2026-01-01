@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "title": "Example",
+        "date": "2026-01-01",
+        "summary": "Example post for learning",
+        "slug": "example-post",
+        "content": "/blog/posts/example.txt"
+    },
+    {
+        "id": 2,
+        "title": "First Post",
+        "date": "2026-01-01",
+        "summary": "First post",
+        "slug": "first-post",
+        "content": "/blog/posts/first.txt"
+    }
+]
