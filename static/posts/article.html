@@ -49,8 +49,17 @@
         </div>
     </div>
     <script>
+        // yoink what article we want from the url
         const urlParams = new URLSearchParams(window.location.search);
         const postSlug = urlParams.get('post');
+
+        if (!postSlug) {
+            const path = window.location.pathname;
+
+            const segments = path.split('/').filter(part => part !== "");
+
+            postSlug = segments[segments.length - 1];
+        }
 
         const titleEl = document.getElementById('article-title');
         const dateEl = document.getElementById('article-date');
@@ -64,6 +73,8 @@
                 if (myPost) {
                     titleEl.textContent = myPost.title;
                     dateEl.textContent = myPost.date;
+
+                    document.title = myPost.title + " | arthurtaft.net";
 
                     return fetch(myPost.content);
                 } else {
