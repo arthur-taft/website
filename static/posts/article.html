@@ -51,7 +51,7 @@
     <script>
         // yoink what article we want from the url
         const urlParams = new URLSearchParams(window.location.search);
-        const postSlug = urlParams.get('post');
+        let postSlug = urlParams.get('post');
 
         if (!postSlug) {
             const path = window.location.pathname;
