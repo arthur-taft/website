@@ -193,10 +193,9 @@ a:visited {
 }
 
 #blog-list {
-    width: 100%; /* Ensure it takes up the container width */
     display: flex;
     flex-direction: column;
-    gap: 1.5rem; /* Adds space between the posts */
+    gap: 1.5rem;
 }
 
 .post-preview {
