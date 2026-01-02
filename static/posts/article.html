@@ -56,7 +56,7 @@
         const dateEl = document.getElementById('article-date');
         const contentEl = document.getElementById('article-content');
 
-        fetch('/blog/posts.json')
+        fetch('/blog/posts/posts.json')
             .then(response => response.json())
             .then(posts => {
                 const myPost = posts.find(p => p.slug === postSlug);

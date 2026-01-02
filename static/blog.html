@@ -52,7 +52,7 @@
         const blogList = document.getElementById('blog-list');
 
         // get json file containing all blog posts
-        fetch('/blog/posts.json')
+        fetch('/blog/posts/posts.json')
             .then(response => {
                 if (!response.ok) {
                     throw new Error("HTTP error " + response.status);
