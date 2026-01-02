@@ -13,7 +13,6 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="icon" href="/favicon.ico" />
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         #container .main-text {
             align-self: center;
@@ -39,9 +38,7 @@
         <div id="container">
             <h2 id="article-title" class="main-header">Loading...</h2>
             <p class="main-subheading" id="article-date"></p>
-            <div class="main-text" id="article-content">
-
-            </div>
+            <div class="main-text" id="article-content"></div>
         </div>
         <div id="footer">
             <p class="footer-text">source: <a class="footer-link" href="https://github.com/arthur-taft/website"
@@ -49,6 +46,7 @@
             <p class="copy-text">&copy; arthur taft - 2026</p>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         // yoink what article we want from the url
         const urlParams = new URLSearchParams(window.location.search);
