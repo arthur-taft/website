@@ -1,10 +1,10 @@
 [
     {
-        "id": 1767316348928,
+        "id": 1767317283301,
         "title": "First Post",
         "date": "2026-01-01",
-        "summary": "TODO: Write a summary...",
+        "summary": "Thoughts and plans on where to go next",
         "slug": "first-post",
-        "content": "/blog/posts/first-post.txt"
+        "content": "/blog/posts/first-post.md"
     }
 ]

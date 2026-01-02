@@ -28,9 +28,8 @@ build:
 	cat static/resume.html > site/resume/index.html
 	cat static/shell-icon.ico > site/favicon.ico
 	cat static/styles.css > site/static/styles.css
-	cat static/posts/example.txt > site/blog/posts/example.txt
-	cat static/posts/first.txt > site/blog/posts/first.txt
 	cat static/posts/article.html > site/blog/posts/article.html
+	cat static/posts/first-post.md > site/blog/posts/first-post.md
 
 .PHONY: all
 all: build deploy

@@ -51,3 +51,36 @@ with open(txt_path, "w") as f:
 print("\nSuccess! Created new post:")
 print("- Entry added to posts.json")
 print(f"- File created: static/posts/{md_filename}")
+
+print("Updating Makefile...")
+
+makefile_path = os.path.join(base_dir, "Makefile")
+new_build_line = f"\tcat static/posts/{md_filename} > site/blog/posts/{md_filename}\n"
+
+try:
+    with open(makefile_path, "r") as f:
+        lines = f.readlines()
+
+    insertion_index = -1
+
+    for i, line in enumerate(lines):
+        if line.strip().startswith(".PHONY: all"):
+            insertion_index = i
+            break
+
+    if insertion_index != 1:
+        if lines[insertion_index - 1].strip() == "":
+            lines.insert(insertion_index - 1, new_build_line)
+        else:
+            lines.insert(insertion_index, new_build_line)
+
+        with open(makefile_path, "w") as f:
+            f.writelines(lines)
+        print("- Added build instructions to Makefile")
+    else:
+        print(
+            "Warning: Could not find the '.PHONY: all' tag in Makefile. Skipped update"
+        )
+
+except Exception as e:
+    print(f"Error updating Makefile: {e}")
