@@ -1,18 +1,10 @@
 [
     {
-        "id": 1,
-        "title": "Example",
-        "date": "2026-01-01",
-        "summary": "Example post for learning",
-        "slug": "example-post",
-        "content": "/blog/posts/example.txt"
-    },
-    {
-        "id": 2,
+        "id": 1767316348928,
         "title": "First Post",
         "date": "2026-01-01",
-        "summary": "First post",
+        "summary": "TODO: Write a summary...",
         "slug": "first-post",
-        "content": "/blog/posts/first.txt"
+        "content": "/blog/posts/first-post.txt"
     }
 ]

@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="icon" href="/favicon.ico" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         #container .main-text {
             align-self: center;
@@ -86,7 +87,7 @@
                 return response.text();
             })
             .then(text => {
-                contentEl.innerHTML = text;
+                contentEl.innerHTML = marked.parse(text);
             })
             .catch(error => {
                 titleEl.textContent = "Error Loading Post";
