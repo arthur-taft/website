@@ -25,11 +25,11 @@ try:
     if insertion_index != 1:
         if lines[insertion_index - 1].strip() == "":
             for file in media_files:
-                media_build_line = f"\tcat static/posts/media/{file} > site/blog/posts/media/{slug}/{file}\n"
+                media_build_line = f"\tcat static/posts/media/{slug}/{file} > site/blog/posts/media/{slug}/{file}\n"
                 lines.insert(insertion_index - 1, media_build_line)
         else:
             for file in media_files:
-                media_build_line = f"\tcat static/posts/media/{file} > site/blog/posts/media/{slug}/{file}\n"
+                media_build_line = f"\tcat static/posts/media/{slug}/{file} > site/blog/posts/media/{slug}/{file}\n"
                 lines.insert(insertion_index, media_build_line)
 
         with open(makefile_path, "w") as f:
