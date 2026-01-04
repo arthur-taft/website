@@ -1,5 +1,13 @@
 [
     {
+        "id": 1767498755042,
+        "title": "Brutus Sherlock Writeup",
+        "date": "2026-01-03",
+        "summary": "Writeup for the Brutus HTB Sherlock",
+        "slug": "brutus-sherlock-writeup",
+        "content": "/blog/posts/brutus-sherlock-writeup.md"
+    },
+    {
         "id": 1767317283301,
         "title": "First Post",
         "date": "2026-01-01",
