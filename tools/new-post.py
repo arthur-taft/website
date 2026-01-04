@@ -20,7 +20,8 @@ md_filename = f"{slug}.md"
 script_location = os.path.dirname(os.path.abspath(__file__))
 base_dir = os.path.dirname(script_location)
 json_path = os.path.join(base_dir, "static", "posts", "posts.json")
-txt_path = os.path.join(base_dir, "static", "posts", md_filename)
+md_path = os.path.join(base_dir, "static", "posts", md_filename)
+media_path = os.path.join(base_dir, "static", "posts", "media", slug)
 
 try:
     with open(json_path, "r") as f:
@@ -45,17 +46,21 @@ with open(json_path, "w") as f:
 
 starter_text = f"Write your content for {title} here."
 
-with open(txt_path, "w") as f:
+with open(md_path, "w") as f:
     f.write(starter_text)
+
+os.mkdir(media_path)
 
 print("\nSuccess! Created new post:")
 print("- Entry added to posts.json")
 print(f"- File created: static/posts/{md_filename}")
+print(f"- Directory created: static/posts/media/{slug}")
 
-print("Updating Makefile...")
+print("\nUpdating Makefile...")
 
 makefile_path = os.path.join(base_dir, "Makefile")
 new_build_line = f"\tcat static/posts/{md_filename} > site/blog/posts/{md_filename}\n"
+media_dir_build_line = f"\tmkdir -p site/blog/posts/media/{slug}\n"
 
 try:
     with open(makefile_path, "r") as f:
@@ -71,8 +76,10 @@ try:
     if insertion_index != 1:
         if lines[insertion_index - 1].strip() == "":
             lines.insert(insertion_index - 1, new_build_line)
+            lines.insert(insertion_index - 1, media_dir_build_line)
         else:
             lines.insert(insertion_index, new_build_line)
+            lines.insert(insertion_index, media_dir_build_line)
 
         with open(makefile_path, "w") as f:
             f.writelines(lines)
