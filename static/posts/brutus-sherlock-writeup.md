@@ -70,7 +70,7 @@ The fourth task is: "SSH login sessions are tracked and assigned a session numbe
 
 I've seen the answer to this question before, on line 324 after the attacker logs in as root. Looking back to that I found that the SSH session number is 37.
 
-![ssh session number](/blog/posts/media/brutus-sherlock-writeup/root-success.png) 
+![ssh session number](/blog/posts/media/brutus-sherlock-writeup/ssh-session.png) 
 
 After dropping this into the prompt for the task I'm reassured that this is correct.
 
