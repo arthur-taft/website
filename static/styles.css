@@ -226,6 +226,10 @@ a:visited {
     line-height: 1.6;
 }
 
+#article-content img {
+    max-width: 35%;
+}
+
 @media (min-width:300px) {
     #top-nav {
         margin-left: 0%;
