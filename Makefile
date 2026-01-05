@@ -43,6 +43,25 @@ build:
 	cat static/posts/media/brutus-sherlock-writeup/good-extract.png > site/blog/posts/media/brutus-sherlock-writeup/good-extract.png
 	cat static/posts/media/brutus-sherlock-writeup/brute-force-attempts.png > site/blog/posts/media/brutus-sherlock-writeup/brute-force-attempts.png
 	cat static/posts/media/brutus-sherlock-writeup/bad-extract.png > site/blog/posts/media/brutus-sherlock-writeup/bad-extract.png
+	cat static/posts/media/brutus-sherlock-writeup/linper.png > site/blog/posts/media/brutus-sherlock-writeup/linper.png
+	cat static/posts/media/brutus-sherlock-writeup/disconnect.png > site/blog/posts/media/brutus-sherlock-writeup/disconnect.png
+	cat static/posts/media/brutus-sherlock-writeup/new-user-added.png > site/blog/posts/media/brutus-sherlock-writeup/new-user-added.png
+	cat static/posts/media/brutus-sherlock-writeup/task-8.png > site/blog/posts/media/brutus-sherlock-writeup/task-8.png
+	cat static/posts/media/brutus-sherlock-writeup/task-7.png > site/blog/posts/media/brutus-sherlock-writeup/task-7.png
+	cat static/posts/media/brutus-sherlock-writeup/task-6.png > site/blog/posts/media/brutus-sherlock-writeup/task-6.png
+	cat static/posts/media/brutus-sherlock-writeup/task-5.png > site/blog/posts/media/brutus-sherlock-writeup/task-5.png
+	cat static/posts/media/brutus-sherlock-writeup/task-4.png > site/blog/posts/media/brutus-sherlock-writeup/task-4.png
+	cat static/posts/media/brutus-sherlock-writeup/task-3.png > site/blog/posts/media/brutus-sherlock-writeup/task-3.png
+	cat static/posts/media/brutus-sherlock-writeup/login-time.png > site/blog/posts/media/brutus-sherlock-writeup/login-time.png
+	cat static/posts/media/brutus-sherlock-writeup/wtmp-dump.png > site/blog/posts/media/brutus-sherlock-writeup/wtmp-dump.png
+	cat static/posts/media/brutus-sherlock-writeup/wtmp-type.png > site/blog/posts/media/brutus-sherlock-writeup/wtmp-type.png
+	cat static/posts/media/brutus-sherlock-writeup/task-2.png > site/blog/posts/media/brutus-sherlock-writeup/task-2.png
+	cat static/posts/media/brutus-sherlock-writeup/task-1.png > site/blog/posts/media/brutus-sherlock-writeup/task-1.png
+	cat static/posts/media/brutus-sherlock-writeup/root-success.png > site/blog/posts/media/brutus-sherlock-writeup/root-success.png
+	cat static/posts/media/brutus-sherlock-writeup/overview.png > site/blog/posts/media/brutus-sherlock-writeup/overview.png
+	cat static/posts/media/brutus-sherlock-writeup/good-extract.png > site/blog/posts/media/brutus-sherlock-writeup/good-extract.png
+	cat static/posts/media/brutus-sherlock-writeup/brute-force-attempts.png > site/blog/posts/media/brutus-sherlock-writeup/brute-force-attempts.png
+	cat static/posts/media/brutus-sherlock-writeup/bad-extract.png > site/blog/posts/media/brutus-sherlock-writeup/bad-extract.png
 
 .PHONY: all
 all: build deploy
