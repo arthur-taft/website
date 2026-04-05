@@ -222,6 +222,8 @@ a:visited {
 }
 
 #article-content p {
+    margin-left: 0%;
+    margin-right: 0%;
     margin-bottom: 1.5rem;
     line-height: 1.6;
 }
