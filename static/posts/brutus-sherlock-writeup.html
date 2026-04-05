@@ -5,10 +5,7 @@ work my way though the HTB Sherlocks, since I’ve never done them before,
 and (almost) any experience is good experience.</p>
 </div>
 </div>
-<div class="sect1 main-header">
-<h2 id="_the_beginning">The Beginning</h2>
-<div class="sectionbody">
-<p class="main-text">On the webpage for the Sherlock I was presented with a password
+<h2 id="_the_beginning" class="main-header">The Beginning</h2><p class="main-text">On the webpage for the Sherlock I was presented with a password
 protected <code>.zip</code> archive and 8 tasks to complete.</p>
 <p>image::/blog/posts/media/brutus-sherlock-writeup/overview.png[brutus
 home page]</p>
@@ -25,14 +22,7 @@ supports those compression methods.</p>
 correct extraction]</p>
 <p class="main-text">After inputting the password, I saw that 3 files were extracted:
 <code>auth.log</code>, <code>utmp.py</code>, and <code>wtmp</code></p>
-</div>
-</div>
-<div class="sect1 main-header">
-<h2 id="_the_tasks_begin">The tasks begin</h2>
-<div class="sectionbody">
-<div class="sect2 main-subheading">
-<h3 id="_task_1">Task 1</h3>
-<p class="main-text">The first task is to: &#8220;Analyze the <code>auth.log</code>. What is the IP address
+<h2 id="_the_tasks_begin" class="main-header">The tasks begin</h2><h3 id="_task_1" class="main-subheading">Task 1</h3><p class="main-text">The first task is to: &#8220;Analyze the <code>auth.log</code>. What is the IP address
 used by the attacker to carry out a brute force attack?&#8221;</p>
 <p class="main-text">I started by opening the file in <code>vim</code> where I can see a log of all
 the authentication attempts from <code>pam_unix</code>. For the first little bit,
@@ -48,10 +38,7 @@ force attempts]</p>
 task, I see that this is the correct IP address.</p>
 <p>image::/blog/posts/media/brutus-sherlock-writeup/task-1.png[task 1
 complete]</p>
-</div>
-<div class="sect2 main-subheading">
-<h3 id="_task_2">Task 2</h3>
-<p class="main-text">The second task is: &#8220;The bruteforce attempts were successful and
+<h3 id="_task_2" class="main-subheading">Task 2</h3><p class="main-text">The second task is: &#8220;The bruteforce attempts were successful and
 attacker gained access to an account on the server. What is the username
 of the account?&#8221;</p>
 <p class="main-text">Looking deeper into the <code>auth.log</code> on line 281 I saw &#8220;Accepted
@@ -66,10 +53,7 @@ login as root]</p>
 confirmation this is the correct account.</p>
 <p>image::/blog/posts/media/brutus-sherlock-writeup/task-2.png[task 2
 complete]</p>
-</div>
-<div class="sect2 main-subheading">
-<h3 id="_task_3">Task 3</h3>
-<p class="main-text">The third task is: &#8220;Identify the UTC timestamp when the attacker logged
+<h3 id="_task_3" class="main-subheading">Task 3</h3><p class="main-text">The third task is: &#8220;Identify the UTC timestamp when the attacker logged
 in manually to the server and established a terminal session to carry
 out their objectives. The login time will be differnt than the
 authentication time, and can be found in the wtmp artifact.&#8221;</p>
@@ -100,10 +84,7 @@ user login time]</p>
 confirmation this is the login time.</p>
 <p>image::/blog/posts/media/brutus-sherlock-writeup/task-3.png[task 3
 complete]</p>
-</div>
-<div class="sect2 main-subheading">
-<h3 id="_task_4">Task 4</h3>
-<p class="main-text">The fourth task is: “SSH login sessions are tracked and assigned a
+<h3 id="_task_4" class="main-subheading">Task 4</h3><p class="main-text">The fourth task is: “SSH login sessions are tracked and assigned a
 session number upon login. What is the session number assigned to the
 attacker’s session for the user account from Question 2?</p>
 <p class="main-text">I’ve seen the answer to this question before, on line 324 after the
@@ -115,10 +96,7 @@ session number]</p>
 is correct.</p>
 <p>image::/blog/posts/media/brutus-sherlock-writeup/task-4.png[task 4
 complete]</p>
-</div>
-<div class="sect2 main-subheading">
-<h3 id="_task_5">Task 5</h3>
-<p class="main-text">The fifth task is: &#8220;The attacker added a new user as part of their
+<h3 id="_task_5" class="main-subheading">Task 5</h3><p class="main-text">The fifth task is: &#8220;The attacker added a new user as part of their
 persistence strategy on the server and gave this new user account higher
 privileges. What is the name of this account?&#8221;</p>
 <p class="main-text">Looking through <code>auth.log</code> I found an interesting chain of events.
@@ -132,10 +110,7 @@ user added]</p>
 was the correct username.</p>
 <p>image::/blog/posts/media/brutus-sherlock-writeup/task-5.png[task 5
 complete]</p>
-</div>
-<div class="sect2 main-subheading">
-<h3 id="_task_6">Task 6</h3>
-<p class="main-text">The sixth task is: &#8220;What is the MITRE ATT&amp;CK sub-technique ID used for
+<h3 id="_task_6" class="main-subheading">Task 6</h3><p class="main-text">The sixth task is: &#8220;What is the MITRE ATT&amp;CK sub-technique ID used for
 persistence by creating a new user account?&#8221;</p>
 <p class="main-text">I honestly didn’t know what this was, so I turned to Google for some
 much needed assistance. After poking around on the MITRE website and
@@ -144,10 +119,7 @@ learning about how they define stuff, I found the ID T1136.001.</p>
 correct.</p>
 <p>image::/blog/posts/media/brutus-sherlock-writeup/task-6.png[task 6
 complete]</p>
-</div>
-<div class="sect2 main-subheading">
-<h3 id="_task_7">Task 7</h3>
-<p class="main-text">The seventh task is: &#8220;What time did the attacker’s first SSH session
+<h3 id="_task_7" class="main-subheading">Task 7</h3><p class="main-text">The seventh task is: &#8220;What time did the attacker’s first SSH session
 end according to auth.log?&#8221;</p>
 <p class="main-text">This should be fairly simple to find. Diving back in to <code>auth.log</code> I’m
 looking for the word disconnect, so doing a simple search inside vim
@@ -163,10 +135,7 @@ of Mar 6 06:37:24</p>
 and confirmed this was the correct time.</p>
 <p>image::/blog/posts/media/brutus-sherlock-writeup/task-7.png[task 7
 complete]</p>
-</div>
-<div class="sect2 main-subheading">
-<h3 id="_task_8">Task 8</h3>
-<p class="main-text">The eighth task is: &#8220;The attacker logged into their backdoor account
+<h3 id="_task_8" class="main-subheading">Task 8</h3><p class="main-text">The eighth task is: &#8220;The attacker logged into their backdoor account
 and utilized their higher privileges to download a script. What is the
 full command executed using sudo?&#8221;</p>
 <p class="main-text">This last task is slightly more tricky than the other other tasks
@@ -183,15 +152,7 @@ download]</p>
 command we’re looking for.</p>
 <p>image::/blog/posts/media/brutus-sherlock-writeup/task-8.png[task 8
 complete]</p>
-</div>
-</div>
-</div>
-<div class="sect1 main-header">
-<h2 id="_the_end">The end</h2>
-<div class="sectionbody">
-<p class="main-text">That’s the Sherlock complete! This honestly didn’t take me too long to
+<h2 id="_the_end" class="main-header">The end</h2><p class="main-text">That’s the Sherlock complete! This honestly didn’t take me too long to
 complete, a super easy challenge. Maybe the next Sherlock I do, I’ll
 ramp up the difficulty on.</p>
 <p class="main-text">Until next time</p>
-</div>
-</div>

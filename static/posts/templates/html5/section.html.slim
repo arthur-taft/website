@@ -1,0 +1,15 @@
+ruby:
+  h_level = level + 1
+
+- if h_level == 2
+  h2 id=id class=role = title
+- elsif h_level == 3
+  h3 id=id class=role = title
+- elsif h_level == 4
+  h4 id=id class=role = title
+- elsif h_level == 5
+  h5 id=id class=role = title
+- else
+  h6 id=id class=role = title
+
+= content
