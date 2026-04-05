@@ -13,6 +13,6 @@
         "date": "2026-01-01",
         "summary": "Thoughts and plans on where to go next",
         "slug": "first-post",
-        "content": "/blog/posts/first-post.adoc"
+        "content": "/blog/posts/first-post.html"
     }
 ]
