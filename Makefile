@@ -29,8 +29,9 @@ build:
 	cat static/shell-icon.ico > site/favicon.ico
 	cat static/styles.css > site/static/styles.css
 	cat static/posts/article.html > site/blog/posts/article.html
-	cat static/posts/first-post.md > site/blog/posts/first-post.md
-	cat static/posts/brutus-sherlock-writeup.md > site/blog/posts/brutus-sherlock-writeup.md
+	cat static/posts/first-post.adoc > site/blog/posts/first-post.adoc
+	cat static/posts/brutus-sherlock-writeup.adoc > site/blog/posts/brutus-sherlock-writeup.adoc
+	cat static/posts/brutus-sherlock-writeup.html > site/blog/posts/brutus-sherlock-writeup.html
 	mkdir -p site/blog/posts/media/brutus-sherlock-writeup
 	cat static/posts/media/brutus-sherlock-writeup/task-3.png > site/blog/posts/media/brutus-sherlock-writeup/task-3.png
 	cat static/posts/media/brutus-sherlock-writeup/login-time.png > site/blog/posts/media/brutus-sherlock-writeup/login-time.png

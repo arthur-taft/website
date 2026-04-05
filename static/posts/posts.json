@@ -5,7 +5,7 @@
         "date": "2026-01-03",
         "summary": "Writeup for the Brutus HTB Sherlock",
         "slug": "brutus-sherlock-writeup",
-        "content": "/blog/posts/brutus-sherlock-writeup.md"
+        "content": "/blog/posts/brutus-sherlock-writeup.html"
     },
     {
         "id": 1767317283301,
@@ -13,6 +13,6 @@
         "date": "2026-01-01",
         "summary": "Thoughts and plans on where to go next",
         "slug": "first-post",
-        "content": "/blog/posts/first-post.md"
+        "content": "/blog/posts/first-post.adoc"
     }
 ]
