@@ -1,24 +1,21 @@
-= Brutus Sherlock Writeup
-
 Here’s my first writeup of 2026! I wanted to get a jump on starting to
 work my way though the HTB Sherlocks, since I’ve never done them before,
 and (almost) any experience is good experience.
 
+[.article-header]
 == The Beginning
 
 On the webpage for the Sherlock I was presented with a password
 protected `.zip` archive and 8 tasks to complete.
 
 .brutus home page
-image::/blog/posts/media/brutus-sherlock-writeup/overview.png[brutus
-home page]
+image::/blog/posts/media/brutus-sherlock-writeup/overview.png[brutus home page]
 
 After downloading the file, I went to extract it, but was faced with an
 interesting error:
 
 .archive failed extraction
-image::/blog/posts/media/brutus-sherlock-writeup/bad-extract.png[archive
-failed extraction]
+image::/blog/posts/media/brutus-sherlock-writeup/bad-extract.png[archive failed extraction]
 
 A quick Google search tells me that the error
 `unsupported compression method 99` means that the regular unix
@@ -27,14 +24,15 @@ compression method used. What I can do, however; is use `7z` since it
 supports those compression methods.
 
 .archive correct extraction
-image::/blog/posts/media/brutus-sherlock-writeup/good-extract.png[archive
-correct extraction]
+image::/blog/posts/media/brutus-sherlock-writeup/good-extract.png[archive correct extraction]
 
 After inputting the password, I saw that 3 files were extracted:
 `auth.log`, `utmp.py`, and `wtmp`
 
+[.article-header]
 == The tasks begin
 
+[.article-subheading]
 === Task 1
 
 The first task is to: "`Analyze the `auth.log`. What is the IP address
@@ -50,16 +48,15 @@ usernames. It looks like this is the attacker making their brute force
 attack.
 
 .brute force attempts
-image::/blog/posts/media/brutus-sherlock-writeup/brute-force-attempts.png[brute
-force attempts]
+image::/blog/posts/media/brutus-sherlock-writeup/brute-force-attempts.png[brute force attempts]
 
 After inputting the IP address "`65.2.161.68`" to the prompt for the
 task, I see that this is the correct IP address.
 
 .task 1 complete
-image::/blog/posts/media/brutus-sherlock-writeup/task-1.png[task 1
-complete]
+image::/blog/posts/media/brutus-sherlock-writeup/task-1.png[task 1 complete]
 
+[.article-subheading]
 === Task 2
 
 The second task is: "`The bruteforce attempts were successful and
@@ -74,17 +71,16 @@ of user root.`" This confirms that the attacker is using the root
 account.
 
 .successful login as root
-image::/blog/posts/media/brutus-sherlock-writeup/root-success.png[successful
-login as root]
+image::/blog/posts/media/brutus-sherlock-writeup/root-success.png[successful login as root]
 
 
 After inputting "`root`" into the prompt for the task, I get a
 confirmation this is the correct account.
 
 .task 2 complete
-image::/blog/posts/media/brutus-sherlock-writeup/task-2.png[task 2
-complete]
+image::/blog/posts/media/brutus-sherlock-writeup/task-2.png[task 2 complete]
 
+[.article-subheading]
 === Task 3
 
 The third task is: "`Identify the UTC timestamp when the attacker logged
@@ -99,8 +95,7 @@ running the `file` command on the wtmp file, that confirmed the file
 is a data format, not ascii-text.
 
 .wtmp filetype
-image::/blog/posts/media/brutus-sherlock-writeup/wtmp-type.png[wtmp
-filetype]
+image::/blog/posts/media/brutus-sherlock-writeup/wtmp-type.png[wtmp filetype]
 
 Once again, heading to Google gives an easier answer. This is a specific
 log file that can be read using the `utmpdump` command. After running
@@ -108,8 +103,7 @@ the command on the file, all of the data got outputted to `stdout`, so
 I redirected the output to a file for easy viewing and manipulation.
 
 .wtmp dump command
-image::/blog/posts/media/brutus-sherlock-writeup/wtmp-dump.png[wtmp dump
-command]
+image::/blog/posts/media/brutus-sherlock-writeup/wtmp-dump.png[wtmp dump command]
 
 Taking a look at this file shows a few different events: reboot, login,
 runlevel, and sessions. From the `auth.log` file, I knew that the
@@ -122,16 +116,15 @@ Lo and behold, at the bottom of the file on line 27 is a login event for
 the root user from the attacker’s IP address on 2024-03-06 06:32:45
 
 .root user login time
-image::/blog/posts/media/brutus-sherlock-writeup/login-time.png[root
-user login time]
+image::/blog/posts/media/brutus-sherlock-writeup/login-time.png[root user login time]
 
 After inputting the time I found into the prompt for the task, I get a
 confirmation this is the login time.
 
 .task 3 complete
-image::/blog/posts/media/brutus-sherlock-writeup/task-3.png[task 3
-complete]
+image::/blog/posts/media/brutus-sherlock-writeup/task-3.png[task 3 complete]
 
+[.article-subheading]
 === Task 4
 
 The fourth task is: “SSH login sessions are tracked and assigned a
@@ -143,17 +136,15 @@ attacker logs in as root. Looking back to that I found that the SSH
 session number is 37.
 
 .ssh session number
-image::/blog/posts/media/brutus-sherlock-writeup/ssh-session.png[ssh
-session number]
-
+image::/blog/posts/media/brutus-sherlock-writeup/ssh-session.png[ssh session number]
 
 After dropping this into the prompt for the task I’m reassured that this
 is correct.
 
 .task 4 complete
-image::/blog/posts/media/brutus-sherlock-writeup/task-4.png[task 4
-complete]
+image::/blog/posts/media/brutus-sherlock-writeup/task-4.png[task 4 complete]
 
+[.article-subheading]
 === Task 5
 
 The fifth task is: "`The attacker added a new user as part of their
@@ -167,16 +158,15 @@ after that, a new user was created. Then the new user was added to the
 is cyberjunkie.
 
 .new user added
-image::/blog/posts/media/brutus-sherlock-writeup/new-user-added.png[new
-user added]
+image::/blog/posts/media/brutus-sherlock-writeup/new-user-added.png[new user added]
 
 After inputting that username into the prompt for the task, I see this
 was the correct username.
 
 .task 5 complete
-image::/blog/posts/media/brutus-sherlock-writeup/task-5.png[task 5
-complete]
+image::/blog/posts/media/brutus-sherlock-writeup/task-5.png[task 5 complete]
 
+[.article-subheading]
 === Task 6
 
 The sixth task is: "`What is the MITRE ATT&CK sub-technique ID used for
@@ -190,9 +180,9 @@ I dropped that in the prompt for the task, and got confirmation that was
 correct.
 
 .task 6 complete
-image::/blog/posts/media/brutus-sherlock-writeup/task-6.png[task 6
-complete]
+image::/blog/posts/media/brutus-sherlock-writeup/task-6.png[task 6 complete]
 
+[.article-subheading]
 === Task 7
 
 The seventh task is: "`What time did the attacker’s first SSH session
@@ -210,11 +200,10 @@ I put the timestamp 2024-03-06 06:37:24 into the prompt for the task,
 and confirmed this was the correct time.
 
 .task 7 complete
-image::/blog/posts/media/brutus-sherlock-writeup/task-7.png[task 7
-complete]
+image::/blog/posts/media/brutus-sherlock-writeup/task-7.png[task 7 complete]
 
+[.article-subheading]
 === Task 8
-
 The eighth task is: "`The attacker logged into their backdoor account
 and utilized their higher privileges to download a script. What is the
 full command executed using sudo?`"
@@ -229,16 +218,15 @@ Now, linper is a system persistence script, which makes compete sense to
 run on a compromised machine like this.
 
 .linper download
-image::/blog/posts/media/brutus-sherlock-writeup/linper.png[linper
-download]
+image::/blog/posts/media/brutus-sherlock-writeup/linper.png[linper download]
 
 After dropping that command in the prompt for the task, I see that’s the
 command we’re looking for.
 
 .task 8 complete
-image::/blog/posts/media/brutus-sherlock-writeup/task-8.png[task 8
-complete]
+image::/blog/posts/media/brutus-sherlock-writeup/task-8.png[task 8 complete]
 
+[.article-header]
 == The end
 
 That’s the Sherlock complete! This honestly didn’t take me too long to

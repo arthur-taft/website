@@ -232,6 +232,15 @@ a:visited {
     max-width: 90%;
 }
 
+.article-header {
+    color: var(--lavender);
+}
+
+.article-subheading {
+    color: var(--sapphire);
+    align-self: start;
+}
+
 @media (min-width:300px) {
     #top-nav {
         margin-left: 0%;
