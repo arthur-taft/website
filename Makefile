@@ -15,7 +15,7 @@ help:
 
 .PHONY: build
 build:
-	mkdir -p site site/about site/blog/posts/media site/contact site/resume site/static
+	mkdir -p site site/about site/blog/posts/media site/contact site/media site/resume site/static site/styles
 	echo -n > site/static/index.html
 	cat static/LiberationMono-Regular.woff2 > site/static/LiberationMono-Regular.woff2
 	cat static/about.html > site/about/index.html
@@ -24,13 +24,11 @@ build:
 	cat static/in-progress.gif > site/static/in-progress.gif
 	cat static/index.html > site/index.html
 	cat static/posts/posts.json > site/blog/posts/posts.json
-	cat static/resume-styles.css > site/static/resume-styles.css
+	cat static/styles/resume-styles.css > site/static/styles/resume-styles.css
 	cat static/resume.html > site/resume/index.html
-	cat static/shell-icon.ico > site/favicon.ico
-	cat static/styles.css > site/static/styles.css
+	cat static/media/shell-icon.ico > site/media/favicon.ico
+	cat static/styles/styles.css > site/static/styles/styles.css
 	cat static/posts/article.html > site/blog/posts/article.html
-	cat static/posts/first-post.adoc > site/blog/posts/first-post.adoc
-	cat static/posts/brutus-sherlock-writeup.adoc > site/blog/posts/brutus-sherlock-writeup.adoc
 	cat static/posts/brutus-sherlock-writeup.html > site/blog/posts/brutus-sherlock-writeup.html
 	mkdir -p site/blog/posts/media/brutus-sherlock-writeup
 	cat static/posts/media/brutus-sherlock-writeup/task-3.png > site/blog/posts/media/brutus-sherlock-writeup/task-3.png
