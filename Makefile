@@ -21,13 +21,13 @@ build:
 	cat static/about.html > site/about/index.html
 	cat static/blog.html > site/blog/index.html
 	cat static/contact.html > site/contact/index.html
-	cat static/media/in-progress.gif > site/static/media/in-progress.gif
+	cat static/media/in-progress.gif > site/media/in-progress.gif
 	cat static/index.html > site/index.html
 	cat static/posts/posts.json > site/blog/posts/posts.json
-	cat static/styles/resume-styles.css > site/static/styles/resume-styles.css
+	cat static/styles/resume-styles.css > site/styles/resume-styles.css
 	cat static/resume.html > site/resume/index.html
 	cat static/media/shell-icon.ico > site/media/favicon.ico
-	cat static/styles/styles.css > site/static/styles/styles.css
+	cat static/styles/styles.css > site/styles/styles.css
 	cat static/posts/article.html > site/blog/posts/article.html
 	cat static/posts/brutus-sherlock-writeup.html > site/blog/posts/brutus-sherlock-writeup.html
 	mkdir -p site/blog/posts/media/brutus-sherlock-writeup
