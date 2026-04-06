@@ -5,7 +5,7 @@
 
 @font-face {
     font-family: "Liberation Mono";
-    src: url("LiberationMono-Regular.woff2");
+    src: url("/media/LiberationMono-Regular.woff2");
 }
 
 :root {
