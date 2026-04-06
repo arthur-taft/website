@@ -9,7 +9,7 @@
     font-size: 1.25rem;
 }
 
-#summary, #education, #projects, #experience {
+#summary, #education, #projects, #experience, #download {
     width: 100%;
     flex: 0 0 100%;
 }
@@ -134,6 +134,47 @@
 
 #experience-info .workplace-date {
     color: var(--sky);
+}
+
+#download {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    margin-top: 1%;
+}
+
+#download .download-title {
+    align-self: center;
+    color: var(--sapphire);
+    margin-bottom: 0.75rem;
+}
+
+#download .download-desc {
+    align-self: center;
+    color: var(--subtext-1);
+    margin-bottom: 0.5rem;
+}
+
+#download a {
+    align-self: center;
+    margin-left: 45%;
+    margin-right: 45%;
+}
+
+#download button {
+    color: var(--subtext-1);
+    cursor: pointer;
+    background-color: var(--surface-0);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--surface-1);
+    transition: transform 0.2s;
+}
+
+#download button:hover {
+    transform: scale(1.05);
+    border-color: var(--mauve);
 }
 
 a {

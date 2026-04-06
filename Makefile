@@ -28,6 +28,7 @@ build:
 	cat static/resume.html > site/resume/index.html
 	cat static/media/shell-icon.ico > site/media/favicon.ico
 	cat static/styles/styles.css > site/styles/styles.css
+	cat static/media/arthur-taft-resume-public.pdf > site/media/arthur-taft-resume-public.pdf
 	cat static/posts/article.html > site/blog/posts/article.html
 	cat static/posts/brutus-sherlock-writeup.html > site/blog/posts/brutus-sherlock-writeup.html
 	mkdir -p site/blog/posts/media/brutus-sherlock-writeup
