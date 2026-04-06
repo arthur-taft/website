@@ -21,7 +21,7 @@ build:
 	cat static/about.html > site/about/index.html
 	cat static/blog.html > site/blog/index.html
 	cat static/contact.html > site/contact/index.html
-	cat static/in-progress.gif > site/static/in-progress.gif
+	cat static/media/in-progress.gif > site/static/media/in-progress.gif
 	cat static/index.html > site/index.html
 	cat static/posts/posts.json > site/blog/posts/posts.json
 	cat static/styles/resume-styles.css > site/static/styles/resume-styles.css
