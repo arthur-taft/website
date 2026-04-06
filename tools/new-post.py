@@ -15,12 +15,13 @@ slug = re.sub(r"[^\w-]", "", slug)
 date_str = datetime.now().strftime("%Y-%m-%d")
 post_id = int(time.time() * 1000)
 
-md_filename = f"{slug}.md"
+adoc_filename = f"{slug}.adoc"
+html_filename = f"{slug}.html"
 
 script_location = os.path.dirname(os.path.abspath(__file__))
 base_dir = os.path.dirname(script_location)
 json_path = os.path.join(base_dir, "static", "posts", "posts.json")
-md_path = os.path.join(base_dir, "static", "posts", md_filename)
+adoc_path = os.path.join(base_dir, "static", "posts", adoc_filename)
 media_path = os.path.join(base_dir, "static", "posts", "media", slug)
 
 try:
@@ -36,7 +37,7 @@ new_post = {
     "date": date_str,
     "summary": "TODO: Write a summary...",
     "slug": slug,
-    "content": f"/blog/posts/{md_filename}",
+    "content": f"/blog/posts/{html_filename}",
 }
 
 posts.insert(0, new_post)
@@ -46,20 +47,20 @@ with open(json_path, "w") as f:
 
 starter_text = f"Write your content for {title} here."
 
-with open(md_path, "w") as f:
+with open(adoc_path, "w") as f:
     f.write(starter_text)
 
 os.mkdir(media_path)
 
 print("\nSuccess! Created new post:")
 print("- Entry added to posts.json")
-print(f"- File created: static/posts/{md_filename}")
+print(f"- File created: static/posts/{adoc_filename}")
 print(f"- Directory created: static/posts/media/{slug}")
 
 print("\nUpdating Makefile...")
 
 makefile_path = os.path.join(base_dir, "Makefile")
-new_build_line = f"\tcat static/posts/{md_filename} > site/blog/posts/{md_filename}\n"
+new_build_line = f"\tcat static/posts/{html_filename} > site/blog/posts/{html_filename}\n"
 media_dir_build_line = f"\tmkdir -p site/blog/posts/media/{slug}\n"
 
 try:
