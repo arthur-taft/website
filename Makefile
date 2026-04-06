@@ -17,7 +17,7 @@ help:
 build:
 	mkdir -p site site/about site/blog/posts/media site/contact site/media site/resume site/static site/styles
 	echo -n > site/static/index.html
-	cat static/media/LiberationMono-Regular.woff2 > site/media/LiberationMono-Regular.woff2
+	cat static/styles/LiberationMono-Regular.woff2 > site/styles/LiberationMono-Regular.woff2
 	cat static/about.html > site/about/index.html
 	cat static/blog.html > site/blog/index.html
 	cat static/contact.html > site/contact/index.html
