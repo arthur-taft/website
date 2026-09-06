@@ -1,0 +1,14 @@
+= Contact Me
+:browser-title: contact
+:page-path: /contact/
+:description: How to get in contact with Arthur Taft
+:email: arthur@arthurtaft.net
+:pgp-id: 0x54FECC82771058F0
+
+== Email
+
+Email is the best way to get in contact with me. I'll usually try to reach out to you within 24 hours of your email being sent.
+
+My Email: mailto:{email}[{email},role=link]
+
+OpenPGP key ID: https://keys.openpgp.org/search?q={pgp-id}[{pgp-id}^,role=pgp-link]

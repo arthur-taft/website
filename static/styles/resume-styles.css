@@ -1,302 +1,135 @@
 /*
  * resume-styles.css
  *
- * Copyright (c) 2025 Arthur Taft. All Rights Reserved.
+ * Copyright (c) 2026 Arthur Taft. All Rights Reserved.
  *
- */ 
+ * Styles the asciidoctor output for /resume. The resume source lives in its
+ * own repo (vendor/resume) and is plain AsciiDoc, so everything here targets
+ * asciidoctor's default classes rather than hand-written markup.
+ *
+ * Indent ladder, as percentages of #resume-body:
+ *   section heading .......  0%
+ *   job title / date / org   5%
+ *   bullet lists ..........  10%
+ *
+ * Palette follows the original: --sapphire headings, --sky for the
+ * title/date/organisation tier, --subtext-1 for body copy.
+ */
 
-#top-nav .nav-link {
-    font-size: 1.25rem;
+/* #resume-body already carries .main-text, so it inherits the responsive
+   inset from styles.css. Children must not inset again. */
+#container #resume-body .main-header,
+#container #resume-body .main-subheading,
+#container #resume-body .main-text {
+    margin-right: 0;
 }
 
-#summary, #education, #projects, #experience, #download {
-    width: 100%;
-    flex: 0 0 100%;
+#container #resume-body .main-header,
+#container #resume-body .main-subheading {
+    margin-left: 0;
 }
 
-#resume-links .resume-list {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    list-style-type: none;
-}
-
-#resume-links .resume-list-item {
-    color: var(--subtext-1);
-}
-
-#resume-links .resume-list-item:first-child {
-    padding-right: 1rem;
-}
-
-#resume-links .resume-link {
-    padding: 0.5rem 1rem;
-}
-
-#resume-links .resume-link:hover {
-    background-color: var(--surface-1);
-}
-
-#summary .main-subheading {
-    margin-left: 25%;
-}
-
-#summary .summary-list {
-    margin-left: 30%;
-    margin-right: 25%;
-}
-
-#summary .summary-list-item {
-    color: var(--subtext-1);
-}
-
-#education .main-subheading {
-    margin-left: 25%;
-}
-
-#education .school {
-    margin-left: 27.5%;
-    color: var(--sky);
-}
-
-#degree-info {
-    display: flex;
-    flex-direction: row;
-    margin-left: 27.5%;
-    margin-right: 25%;
-    justify-content: space-between;
-}
-
-#degree-info .degree {
-    color: var(--sky);
-}
-
-#degree-info .grad-date {
-    color: var(--sky);
-}
-
-#education .education-list {
-    margin-left: 30%;
-    margin-right: 25%;
-}
-
-#education .education-list-item {
-    color: var(--subtext-1);
-}
-
-#projects .main-subheading {
-    margin-left: 25%;
-}
-
-#projects .project-title {
-    margin-left: 27.5%;
-    color: var(--sky);
-}
-
-#projects .project-list {
-    margin-left: 30%;
-    margin-right: 25%;
-}
-
-#projects .project-list-item {
-    color: var(--subtext-1);
-}
-
-#experience .main-subheading {
-    margin-left: 25%;
-}
-
-#experience .experience-title {
-    margin-left: 27.5%;
-    color: var(--sky);
-}
-
-#experience .experience-list {
-    margin-left: 30%;
-    margin-right: 25%;
-}
-
-#experience .experience-list-item {
-    color: var(--subtext-1);
-}
-
-#experience-info {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-left: 27.5%;
-    margin-right: 25%;
-}
-
-#experience-info .workplace {
-    color: var(--sky);
-}
-
-#experience-info .workplace-date {
-    color: var(--sky);
-}
-
-#download {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    margin-top: 1%;
-}
-
-#download .download-title {
-    align-self: center;
-    color: var(--sapphire);
-    margin-bottom: 0.75rem;
-}
-
-#download .download-desc {
-    align-self: center;
-    color: var(--subtext-1);
+#container #resume-body .main-header {
+    text-align: center;
     margin-bottom: 0.5rem;
 }
 
-#download a {
-    align-self: center;
-    margin-left: 45%;
-    margin-right: 45%;
+#container #resume-body .main-subheading {
+    margin-top: 1.25rem;
+    margin-bottom: 0.4rem;
 }
 
-#download button {
+/* the contact line, from [.center] */
+#resume-body .center {
     color: var(--subtext-1);
-    cursor: pointer;
-    background-color: var(--surface-0);
-    padding: 1.5rem;
-    border-radius: 8px;
-    border: 1px solid var(--surface-1);
-    transition: transform 0.2s;
+    text-align: center;
+    margin-bottom: 0.5rem;
 }
 
-#download button:hover {
-    transform: scale(1.05);
-    border-color: var(--mauve);
+/* from ''' */
+#resume-body hr {
+    border: none;
+    border-top: 1px solid var(--surface-1);
+    margin-bottom: 0.75rem;
 }
 
-a {
-    font-size: 1rem;
+/* Title tier: the two-column title/date rows from
+   [cols="<,>", frame=none, grid=none], plus the Skills and Projects blocks. */
+#resume-body table.tableblock {
+    width: 95%;
+    margin-left: 5%;
+    border: none;
+    border-collapse: collapse;
+    margin-bottom: 0.2rem;
 }
 
-@media (min-width:300px) {
-    #summary .main-subheading {
-        margin-left: 5%;
-    }
-
-    #summary .summary-list {
-        margin-left: 10%;
-        margin-right: 5%;
-    }
-
-    #education .main-subheading {
-        margin-left: 5%;
-    }
-
-    #education .school {
-        margin-left: 7.5%;
-    }
-
-    #degree-info {
-        margin-left: 7.5%;
-        margin-right: 0%;
-    }
-
-    #education .education-list {
-        margin-left: 10%;
-        margin-right: 5%;
-    }
-
-    #projects .main-subheading {
-        margin-left: 5%;
-    }
-
-    #projects .project-title {
-        margin-left: 7.5%;
-    }
-
-    #projects .project-list {
-        margin-left: 10%;
-        margin-right: 5%;
-    }
-
-    #experience .main-subheading {
-        margin-left: 5%;
-    }
-
-    #experience .experience-title {
-        margin-left: 7.5%;
-    }
-
-    #experience .experience-list {
-        margin-left: 10%;
-        margin-right: 5%;
-    }
-
-    #experience-info {
-        margin-left: 7.5%;
-        margin-right: 0%;
-    }
+#resume-body td.tableblock {
+    border: none;
+    padding: 0;
+    vertical-align: top;
 }
 
-@media (min-width:900px) {
-    #summary .main-subheading {
-        margin-left: 25%;
-    }
+#resume-body td.halign-left {
+    text-align: left;
+}
 
-    #summary .summary-list {
-        margin-left: 30%;
-        margin-right: 25%;
-    }
+#resume-body td.halign-right {
+    text-align: right;
+}
 
-    #education .main-subheading {
-        margin-left: 25%;
-    }
+#container #resume-body .main-text {
+    margin-left: 5%;
+}
 
-    #education .school {
-        margin-left: 27.5%;
-    }
+/* One colour for the whole title tier -- the organisation line is an <em> in
+   the same table cell as plain text, so splitting colours breaks mid-sentence. */
+#resume-body p.tableblock,
+#resume-body p.tableblock strong,
+#resume-body p.tableblock em,
+#resume-body .main-text strong {
+    color: var(--sky);
+    margin: 0;
+}
 
-    #degree-info {
-        margin-left: 27.5%;
-        margin-right: 25%;
-    }
+#resume-body p.tableblock em {
+    font-style: normal;
+}
 
-    #education .education-list {
-        margin-left: 30%;
-        margin-right: 25%;
-    }
+/* Content tier: bullets, from * lists */
+#resume-body .ulist {
+    margin-left: 10%;
+    margin-bottom: 0.75rem;
+}
 
-    #projects .main-subheading {
-        margin-left: 25%;
-    }
+#resume-body .ulist ul {
+    color: var(--subtext-1);
+    padding-left: 1.25rem;
+}
 
-    #projects .project-title {
-        margin-left: 27.5%;
-    }
+#resume-body .ulist ul li {
+    margin-bottom: 0.25rem;
+}
 
-    #projects .project-list {
-        margin-left: 30%;
-        margin-right: 25%;
-    }
+#resume-body .ulist ul li p {
+    margin: 0;
+}
 
-    #experience .main-subheading {
-        margin-left: 25%;
-    }
+#resume-body a {
+    color: var(--sapphire);
+}
 
-    #experience .experience-title {
-        margin-left: 27.5%;
-    }
+#resume-body a:hover {
+    background-color: var(--surface-1);
+}
 
-    #experience .experience-list {
-        margin-left: 30%;
-        margin-right: 25%;
-    }
+/* Asciidoctor writes an inline 50/50 colgroup for [cols="<,>"]. Rather than
+   guess a split, let auto table layout size the columns and keep the date on
+   one line -- the title column then takes whatever is left. */
+#resume-body colgroup col {
+    width: auto !important;
+}
 
-    #experience-info {
-        margin-left: 27.5%;
-        margin-right: 25%;
-    }
+#resume-body td.halign-right {
+    white-space: nowrap;
+    padding-left: 1rem;
 }

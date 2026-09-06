@@ -1,0 +1,8 @@
+= Blog
+:browser-title: blog
+:page-path: /blog/
+:page-script: /scripts/blog.js
+
+++++
+<div id="blog-list"></div>
+++++

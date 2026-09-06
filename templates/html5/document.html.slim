@@ -1,0 +1,47 @@
+doctype html
+html lang="en"
+  head
+    meta charset="UTF-8"
+    meta name="viewport" content="width=device-width"
+    title = "#{attr 'browser-title', doctitle.downcase} | #{attr 'site-name'}"
+    meta content=doctitle property="og:title"
+    meta content="#{attr 'site-url'}#{attr 'page-path', '/'}" property="og:url"
+    - if (attr? 'description')
+      meta name="description" content=(attr 'description')
+      meta content=(attr 'description') property="og:description"
+    meta name="theme-color" content="#a6e3a1"
+    link rel="stylesheet" href="/styles/styles.css"
+    - (attr 'extra-styles', '').split(',').each do |href|
+      link rel="stylesheet" href=href.strip
+    link rel="icon" href="/media/favicon.ico"
+  body
+    #main-cont
+      #top-nav
+        ul.nav-list
+          li.nav-item: a.nav-link href="/" home
+          li.nav-item: a.nav-link href="/blog" blog
+          li.nav-item: a.nav-link href="/resume" resume
+          li.nav-item: a.nav-link href="/contact" contact
+          li.nav-item: a.nav-link href="/about" about me
+      #title-div
+        h1.logo
+          | &gt;_
+        h1.page-title = attr 'site-name'
+      #container
+        - if (attr? 'showtitle')
+          h2.main-header = doctitle
+        - if (attr? 'date')
+          p.main-subheading = attr 'date'
+        - if (attr? 'content-id')
+          div id=(attr 'content-id') class=(attr 'content-class', 'main-text')
+            = content
+        - else
+          = content
+      #footer
+        p.footer-text
+          ' source:
+          a.footer-link href=(attr 'source-url') target="_blank" = (attr 'source-url').sub(%r{^https?://}, '')
+        p.copy-text
+          | &copy; #{attr 'author', 'arthur taft'} - #{attr 'docyear'}
+    - if (attr? 'page-script')
+      script src=(attr 'page-script') defer=true

@@ -1,0 +1,3 @@
+[submodule "vendor/resume"]
+	path = vendor/resume
+	url = https://github.com/arthur-taft/resume

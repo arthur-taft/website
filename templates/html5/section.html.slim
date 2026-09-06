@@ -1,0 +1,22 @@
+ruby:
+  h_level = level + (document.attr 'heading-offset', 2).to_i
+  h_level = 6 if h_level > 6
+  default_role = h_level == 2 ? (document.attr 'h2-role', 'main-header') \
+                              : (document.attr 'h3-role', 'main-subheading')
+  sect_role = role
+  sect_role = default_role if sect_role.nil?
+  sect_role = nil if sect_role.empty?
+
+- case h_level
+- when 2
+  h2 id=id class=sect_role = title
+- when 3
+  h3 id=id class=sect_role = title
+- when 4
+  h4 id=id class=sect_role = title
+- when 5
+  h5 id=id class=sect_role = title
+- else
+  h6 id=id class=sect_role = title
+
+= content

@@ -1,0 +1,141 @@
+= Asciidoc Update
+:date: 2026-09-05
+:summary: Update on how I moved to rendered asciidoc for the website
+
+After wearing the statically typed, personally involved, html website badge for almost a year, I figured it was time to move off of my high horse and actually move to using a system that allowed me to update my website in minutes -- not hours. I was getting frustrated with how long it would take to update things, and would leave stale pages up, since I didn't want to update them.
+
+== What I had before
+
+The old setup had three moving parts. Static pages like `index.html` and `about.html` were hand-written, each carrying its own copy of the nav, the title block, and the footer. Blog posts started off as Markdown and eventualy migrated to AsciiDoc, rendered through a small set of slim templates into bare HTML fragments. And a Makefile copied everything into `site/` for deployment.
+
+The catch is that asciidoctor was never actually part of the build. I rendered posts by hand and committed the HTML next to the source. The Makefile just copied the result.
+
+Every file in the site had its own line:
+
+[source,makefile]
+----
+cat static/about.html > site/about/index.html
+cat static/media/in-progress.gif > site/media/in-progress.gif
+cat static/posts/media/brutus-sherlock-writeup/task-1.png > site/blog/posts/media/brutus-sherlock-writeup/task-1.png
+----
+
+Roughly seventy lines of that, and it grew every time I added anything.
+
+I had two Python scripts whose entire job was editing the Makefile for me. `new-post.py` inserted build lines above the `.PHONY: all` target, and `add-media.py` appended one `cat` line per image in a post's media folder. I'd run `add-media.py` more than once on the same post at some point, so articles with multiple images would cause the linecount to explode.
+
+== The new layout
+
+[source]
+----
+content/            everything I write
+  index.adoc
+  about.adoc
+  blog.adoc
+  contact.adoc
+  posts/*.adoc
+static/             copied byte-for-byte, mirrors the output tree
+templates/html5/    slim templates
+vendor/resume/      submodule, the resume lives in its own repo
+tools/
+site/               build output, gitignored
+----
+
+The rule for `static/` is the part I like most: whatever path a file has under `static/`, it gets the same path under `site/`. If I want `/media/foo.png` on the live site, I put it at `static/media/foo.png`. There is no mapping table anywhere, and nothing to keep in sync.
+
+== The Makefile
+
+This is the change that made everything else possible. Wildcards and pattern rules instead of a file list:
+
+[source,makefile]
+----
+POST_SRC := $(wildcard $(CONTENT)/posts/*.adoc)
+POSTS    := $(patsubst $(CONTENT)/posts/%.adoc,$(SITE)/blog/post/%/index.html,$(POST_SRC))
+ASSETS   := $(shell find $(STATIC) -type f -not -name '.gitkeep')
+COPIED   := $(patsubst $(STATIC)/%,$(SITE)/%,$(ASSETS))
+
+$(SITE)/blog/post/%/index.html: $(CONTENT)/posts/%.adoc $(TPL)
+	@mkdir -p $(@D)
+	$(ASCIIDOCTOR) $(ADOC_FLAGS) $(POST_FLAGS) -a page-path=/blog/post/$*/ -o $@ $<
+
+$(SITE)/%: $(STATIC)/%
+	@mkdir -p $(@D)
+	cp $< $@
+----
+
+It ended up about the same length as the old one. The difference is that it's a *constant* length. The old one grew by a line per file, forever.
+
+Both Makefile-patching scripts are gone. `add-media.py` was deleted outright, dropping a file in the media directory is now enough. `new-post.py` shrank to "write a stub file, make a directory."
+
+== One template for every page
+
+The nav, title block, and footer used to be copy-pasted into six files. Now there's one slim document template that emits the whole shebang, and every page is just content.
+
+The templates are driven by asciidoctor attributes rather than being special-cased per page:
+
+`heading-offset`:: pages put the doctitle in the `h2` slot, so their sections start at `h3`. Posts want `==` to land on `h2`. One attribute, set per rule in the Makefile.
+
+`content-id`:: wraps the body in a div. Posts get `#article-content`, the resume gets `#resume-body`, ordinary pages get nothing.
+
+`paragraph-role`:: the default CSS class for paragraphs. Pages want `main-text`, posts want bare `<p>`.
+
+`showtitle@`:: set site-wide, and the trailing `@` makes it a soft default so an individual document can override it with `:!showtitle:`.
+
+== posts.json builds itself
+
+The blog index still reads a JSON file to render the post list, but I no longer write it by hand. Each post carries a normal AsciiDoc header:
+
+[source,asciidoc]
+----
+= Asciidoc Update
+:date: 2026-09-05
+:summary: Update on how I moved to rendered asciidoc for the website
+----
+
+`tools/gen-posts-json.py` reads those at build time and derives the slug and URL from the filename. It exits non-zero if a title or date is missing, which fails the build instead of silently shipping a broken listing.
+
+== Posts are real pages now
+
+The old `article.html` was a shell that fetched `posts.json`, found the post by slug, fetched the HTML fragment, and dropped it in with `innerHTML`. Every post was three requests and a "Loading..." flash, and the page title only existed after JavaScript ran.
+
+Now every post is rendered to `site/blog/post/<slug>/index.html` as a complete page at build time. Same URLs, so nothing external changed, but the title is in the HTML where link previews and search engines can see it, and the page works with JavaScript off.
+
+== The resume lives in another repo
+
+My resume is its own repo, written in AsciiDoc, and it already built to PDF with asciidoctor-pdf. Rather than maintain a second copy, I pulled it in as a submodule and let the site render the same source:
+
+[source,makefile]
+----
+$(RESUME_SRC):
+	git submodule update --init vendor/resume
+
+$(SITE)/resume/index.html: $(RESUME_SRC) $(TPL)
+	@mkdir -p $(@D)
+	$(ASCIIDOCTOR) $(ADOC_FLAGS) -a browser-title=resume -a page-path=/resume/ \
+		-a heading-offset=1 -a content-id=resume-body \
+		-a extra-styles=/styles/resume-styles.css -o $@ $<
+----
+
+The rule for `$(RESUME_SRC)` means a fresh clone without `--recursive` still builds — make checks the submodule out on demand.
+
+The resume source needed no website-specific markup at all. It stays a portable document that still builds to PDF on its own, and the three attributes above do all the adapting.
+
+== Getting the toolchain on Gentoo
+
+Ruby is slotted on Gentoo, so `dev-ruby/rubygems` only gives you versioned binaries like `gem34`. The unversioned symlink comes from `app-eselect/eselect-ruby`:
+
+[source,console]
+----
+# eselect ruby list
+# eselect ruby set ruby34
+----
+
+I initially attempted to install evertything through `gem`, but was running into issues where `gem` wasn't listed in my path (because of slotting). I did some more reasearch and found out that I didn't actually need `gem`. Everything is in the main portage gentoo overlay:
+
+[source,console]
+----
+# emerge -av dev-ruby/asciidoctor dev-ruby/slim dev-ruby/tilt dev-ruby/concurrent-ruby
+----
+
+== What's next
+
+Now that school is back in session for me, I will start making writeups about the different lab activities that I do, as well as documenting my process for creating things for the cybersecurity club and work.

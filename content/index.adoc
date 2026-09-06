@@ -1,0 +1,6 @@
+= Home
+:browser-title: home
+:page-path: /
+:description: My personal website!
+
+[Placeholder]

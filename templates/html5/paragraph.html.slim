@@ -1,0 +1,7 @@
+ruby:
+  para_role = role
+  para_role = (document.attr 'paragraph-role', 'main-text') if para_role.nil?
+  para_role = nil if para_role.empty?
+
+p id=id class=para_role
+  = content

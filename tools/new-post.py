@@ -1,94 +1,57 @@
-import json
+#!/usr/bin/env python3
+"""Scaffold a new blog post.
+
+Creates content/posts/<slug>.adoc and static/blog/posts/media/<slug>/.
+Nothing else needs touching: the Makefile picks the post up by wildcard and
+posts.json is regenerated from the document header at build time.
+"""
+
 import os
+import pathlib
 import re
-from datetime import datetime
-import time
+import sys
+from datetime import date
 
-title = input("Enter new post title: ")
+BASE = pathlib.Path(__file__).resolve().parent.parent
 
-slug = title.lower().strip()
+TEMPLATE = """= {title}
+:date: {date}
+:summary: TODO: write a summary...
 
-slug = slug.replace(" ", "-")
+Write your content for {title} here.
+"""
 
-slug = re.sub(r"[^\w-]", "", slug)
 
-date_str = datetime.now().strftime("%Y-%m-%d")
-post_id = int(time.time() * 1000)
+def main():
+    title = input("Enter new post title: ").strip()
 
-adoc_filename = f"{slug}.adoc"
-html_filename = f"{slug}.html"
+    if not title:
+        print("A title is required.", file=sys.stderr)
+        return 1
 
-script_location = os.path.dirname(os.path.abspath(__file__))
-base_dir = os.path.dirname(script_location)
-json_path = os.path.join(base_dir, "static", "posts", "posts.json")
-adoc_path = os.path.join(base_dir, "static", "posts", adoc_filename)
-media_path = os.path.join(base_dir, "static", "posts", "media", slug)
+    slug = re.sub(r"[^\w-]", "", title.lower().replace(" ", "-"))
+    adoc = BASE / "content" / "posts" / f"{slug}.adoc"
+    media = BASE / "static" / "blog" / "posts" / "media" / slug
 
-try:
-    with open(json_path, "r") as f:
-        posts = json.load(f)
-except FileNotFoundError:
-    print("Error: Could not find static/posts/posts.json")
-    exit(1)
+    if adoc.exists():
+        print(f"{adoc} already exists.", file=sys.stderr)
+        return 1
 
-new_post = {
-    "id": post_id,
-    "title": title,
-    "date": date_str,
-    "summary": "TODO: Write a summary...",
-    "slug": slug,
-    "content": f"/blog/posts/{html_filename}",
-}
+    adoc.parent.mkdir(parents=True, exist_ok=True)
+    adoc.write_text(
+        TEMPLATE.format(title=title, date=date.today().isoformat()),
+        encoding="utf-8",
+    )
+    media.mkdir(parents=True, exist_ok=True)
 
-posts.insert(0, new_post)
+    print("\nSuccess! Created new post:")
+    print(f"- {adoc.relative_to(BASE)}")
+    print(f"- {media.relative_to(BASE)}/")
+    print("\nDrop images in that media directory and reference them as:")
+    print(f"  image::/blog/posts/media/{slug}/example.png[alt text]")
+    print("\nThen run 'make build'. No Makefile edits needed.")
+    return 0
 
-with open(json_path, "w") as f:
-    json.dump(posts, f, indent=4)
 
-starter_text = f"Write your content for {title} here."
-
-with open(adoc_path, "w") as f:
-    f.write(starter_text)
-
-os.mkdir(media_path)
-
-print("\nSuccess! Created new post:")
-print("- Entry added to posts.json")
-print(f"- File created: static/posts/{adoc_filename}")
-print(f"- Directory created: static/posts/media/{slug}")
-
-print("\nUpdating Makefile...")
-
-makefile_path = os.path.join(base_dir, "Makefile")
-new_build_line = f"\tcat static/posts/{html_filename} > site/blog/posts/{html_filename}\n"
-media_dir_build_line = f"\tmkdir -p site/blog/posts/media/{slug}\n"
-
-try:
-    with open(makefile_path, "r") as f:
-        lines = f.readlines()
-
-    insertion_index = -1
-
-    for i, line in enumerate(lines):
-        if line.strip().startswith(".PHONY: all"):
-            insertion_index = i
-            break
-
-    if insertion_index != 1:
-        if lines[insertion_index - 1].strip() == "":
-            lines.insert(insertion_index - 1, new_build_line)
-            lines.insert(insertion_index - 1, media_dir_build_line)
-        else:
-            lines.insert(insertion_index, new_build_line)
-            lines.insert(insertion_index, media_dir_build_line)
-
-        with open(makefile_path, "w") as f:
-            f.writelines(lines)
-        print("- Added build instructions to Makefile")
-    else:
-        print(
-            "Warning: Could not find the '.PHONY: all' tag in Makefile. Skipped update"
-        )
-
-except Exception as e:
-    print(f"Error updating Makefile: {e}")
+if __name__ == "__main__":
+    sys.exit(main())

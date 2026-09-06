@@ -281,3 +281,42 @@ a:visited {
         margin-left: 25%;
     }
 }
+
+#container #article-content {
+    align-self: center;
+}
+
+/* Asciidoctor block output inside posts: source blocks, block titles,
+   inline code, and definition lists. */
+#article-content .listingblock,
+#article-content .literalblock {
+    margin-bottom: 1rem;
+}
+
+#article-content .listingblock .content pre,
+#article-content .literalblock .content pre {
+    background-color: var(--mantle);
+    border-left: 2px solid var(--surface-1);
+    color: var(--subtext-1);
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+}
+
+#article-content .title {
+    color: var(--overlay-1);
+    margin-bottom: 0.25rem;
+}
+
+#article-content :not(pre) > code {
+    color: var(--peach);
+}
+
+#article-content .dlist dt {
+    color: var(--sky);
+    margin-top: 0.6rem;
+}
+
+#article-content .dlist dd {
+    color: var(--subtext-1);
+    margin-left: 1.5rem;
+}

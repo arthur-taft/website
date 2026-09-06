@@ -1,3 +1,7 @@
+= Brutus Sherlock Writeup
+:date: 2026-01-03
+:summary: Writeup for the Brutus HTB Sherlock
+
 Here’s my first writeup of 2026! I wanted to get a jump on starting to
 work my way though the HTB Sherlocks, since I’ve never done them before,
 and (almost) any experience is good experience.

@@ -4,99 +4,117 @@
 
 SHELL := bash
 
-.PHONY: help 
+SITE      := site
+CONTENT   := content
+STATIC    := static
+TEMPLATES := templates
+
+DEPLOY_DIR := /var/www/arthurtaft.net/
+
+ASCIIDOCTOR := asciidoctor
+ADOC_FLAGS  := -T $(TEMPLATES) -E slim --failure-level=WARN \
+               -a site-name=arthurtaft.net \
+               -a site-url=https://arthurtaft.net \
+               -a source-url=https://github.com/arthur-taft/website \
+               -a author='arthur taft' \
+               -a showtitle@
+
+# extra attributes applied only to blog posts
+POST_FLAGS := -a content-id=article-content -a paragraph-role= \
+              -a heading-offset=1 -a h2-role=article-header -a h3-role=article-subheading
+
+# ---- sources -------------------------------------------------------------
+PAGE_SRC  := $(filter-out $(CONTENT)/index.adoc,$(wildcard $(CONTENT)/*.adoc))
+POST_SRC  := $(wildcard $(CONTENT)/posts/*.adoc)
+RAW_SRC   := $(wildcard $(CONTENT)/*.html)
+RESUME_SRC := vendor/resume/arthur-taft-resume-public.adoc
+ASSETS    := $(shell find $(STATIC) -type f -not -name '.gitkeep')
+TPL       := $(shell find $(TEMPLATES) -type f)
+
+# ---- targets -------------------------------------------------------------
+PAGES  := $(patsubst $(CONTENT)/%.adoc,$(SITE)/%/index.html,$(PAGE_SRC))
+POSTS  := $(patsubst $(CONTENT)/posts/%.adoc,$(SITE)/blog/post/%/index.html,$(POST_SRC))
+RAW    := $(patsubst $(CONTENT)/%.html,$(SITE)/%/index.html,$(RAW_SRC))
+COPIED := $(patsubst $(STATIC)/%,$(SITE)/%,$(ASSETS))
+INDEX  := $(SITE)/index.html
+JSON   := $(SITE)/blog/posts/posts.json
+
+.PHONY: help
 help:
 	@echo 'make build		default target, builds site into ./site'
 	@echo 'make serve		serve site locally using simple python webserver'
 	@echo 'make deploy		deploy site'
 	@echo 'make test		build and serve site'
 	@echo 'make all 		build and deploy site'
+	@echo 'make rebuild		clean + build, after deleting or renaming a post'
 	@echo 'make clean		cleans'
 
 .PHONY: build
-build:
-	mkdir -p site site/about site/blog/posts/media site/contact site/media site/resume site/static site/styles
-	echo -n > site/static/index.html
-	cat static/styles/LiberationMono-Regular.woff2 > site/styles/LiberationMono-Regular.woff2
-	cat static/about.html > site/about/index.html
-	cat static/blog.html > site/blog/index.html
-	cat static/contact.html > site/contact/index.html
-	cat static/media/in-progress.gif > site/media/in-progress.gif
-	cat static/index.html > site/index.html
-	cat static/posts/posts.json > site/blog/posts/posts.json
-	cat static/styles/resume-styles.css > site/styles/resume-styles.css
-	cat static/resume.html > site/resume/index.html
-	cat static/media/shell-icon.ico > site/media/favicon.ico
-	cat static/styles/styles.css > site/styles/styles.css
-	cat static/media/arthur-taft-resume-public.pdf > site/media/arthur-taft-resume-public.pdf
-	cat static/posts/article.html > site/blog/posts/article.html
-	cat static/posts/brutus-sherlock-writeup.html > site/blog/posts/brutus-sherlock-writeup.html
-	mkdir -p site/blog/posts/media/brutus-sherlock-writeup
-	cat static/posts/media/brutus-sherlock-writeup/task-3.png > site/blog/posts/media/brutus-sherlock-writeup/task-3.png
-	cat static/posts/media/brutus-sherlock-writeup/login-time.png > site/blog/posts/media/brutus-sherlock-writeup/login-time.png
-	cat static/posts/media/brutus-sherlock-writeup/wtmp-dump.png > site/blog/posts/media/brutus-sherlock-writeup/wtmp-dump.png
-	cat static/posts/media/brutus-sherlock-writeup/wtmp-type.png > site/blog/posts/media/brutus-sherlock-writeup/wtmp-type.png
-	cat static/posts/media/brutus-sherlock-writeup/task-2.png > site/blog/posts/media/brutus-sherlock-writeup/task-2.png
-	cat static/posts/media/brutus-sherlock-writeup/task-1.png > site/blog/posts/media/brutus-sherlock-writeup/task-1.png
-	cat static/posts/media/brutus-sherlock-writeup/root-success.png > site/blog/posts/media/brutus-sherlock-writeup/root-success.png
-	cat static/posts/media/brutus-sherlock-writeup/overview.png > site/blog/posts/media/brutus-sherlock-writeup/overview.png
-	cat static/posts/media/brutus-sherlock-writeup/good-extract.png > site/blog/posts/media/brutus-sherlock-writeup/good-extract.png
-	cat static/posts/media/brutus-sherlock-writeup/brute-force-attempts.png > site/blog/posts/media/brutus-sherlock-writeup/brute-force-attempts.png
-	cat static/posts/media/brutus-sherlock-writeup/bad-extract.png > site/blog/posts/media/brutus-sherlock-writeup/bad-extract.png
-	cat static/posts/media/brutus-sherlock-writeup/linper.png > site/blog/posts/media/brutus-sherlock-writeup/linper.png
-	cat static/posts/media/brutus-sherlock-writeup/disconnect.png > site/blog/posts/media/brutus-sherlock-writeup/disconnect.png
-	cat static/posts/media/brutus-sherlock-writeup/new-user-added.png > site/blog/posts/media/brutus-sherlock-writeup/new-user-added.png
-	cat static/posts/media/brutus-sherlock-writeup/task-8.png > site/blog/posts/media/brutus-sherlock-writeup/task-8.png
-	cat static/posts/media/brutus-sherlock-writeup/task-7.png > site/blog/posts/media/brutus-sherlock-writeup/task-7.png
-	cat static/posts/media/brutus-sherlock-writeup/task-6.png > site/blog/posts/media/brutus-sherlock-writeup/task-6.png
-	cat static/posts/media/brutus-sherlock-writeup/task-5.png > site/blog/posts/media/brutus-sherlock-writeup/task-5.png
-	cat static/posts/media/brutus-sherlock-writeup/task-4.png > site/blog/posts/media/brutus-sherlock-writeup/task-4.png
-	cat static/posts/media/brutus-sherlock-writeup/task-3.png > site/blog/posts/media/brutus-sherlock-writeup/task-3.png
-	cat static/posts/media/brutus-sherlock-writeup/login-time.png > site/blog/posts/media/brutus-sherlock-writeup/login-time.png
-	cat static/posts/media/brutus-sherlock-writeup/wtmp-dump.png > site/blog/posts/media/brutus-sherlock-writeup/wtmp-dump.png
-	cat static/posts/media/brutus-sherlock-writeup/wtmp-type.png > site/blog/posts/media/brutus-sherlock-writeup/wtmp-type.png
-	cat static/posts/media/brutus-sherlock-writeup/task-2.png > site/blog/posts/media/brutus-sherlock-writeup/task-2.png
-	cat static/posts/media/brutus-sherlock-writeup/task-1.png > site/blog/posts/media/brutus-sherlock-writeup/task-1.png
-	cat static/posts/media/brutus-sherlock-writeup/root-success.png > site/blog/posts/media/brutus-sherlock-writeup/root-success.png
-	cat static/posts/media/brutus-sherlock-writeup/overview.png > site/blog/posts/media/brutus-sherlock-writeup/overview.png
-	cat static/posts/media/brutus-sherlock-writeup/good-extract.png > site/blog/posts/media/brutus-sherlock-writeup/good-extract.png
-	cat static/posts/media/brutus-sherlock-writeup/brute-force-attempts.png > site/blog/posts/media/brutus-sherlock-writeup/brute-force-attempts.png
-	cat static/posts/media/brutus-sherlock-writeup/bad-extract.png > site/blog/posts/media/brutus-sherlock-writeup/bad-extract.png
-	cat static/posts/media/brutus-sherlock-writeup/ssh-session.png > site/blog/posts/media/brutus-sherlock-writeup/ssh-session.png
-	cat static/posts/media/brutus-sherlock-writeup/linper.png > site/blog/posts/media/brutus-sherlock-writeup/linper.png
-	cat static/posts/media/brutus-sherlock-writeup/disconnect.png > site/blog/posts/media/brutus-sherlock-writeup/disconnect.png
-	cat static/posts/media/brutus-sherlock-writeup/new-user-added.png > site/blog/posts/media/brutus-sherlock-writeup/new-user-added.png
-	cat static/posts/media/brutus-sherlock-writeup/task-8.png > site/blog/posts/media/brutus-sherlock-writeup/task-8.png
-	cat static/posts/media/brutus-sherlock-writeup/task-7.png > site/blog/posts/media/brutus-sherlock-writeup/task-7.png
-	cat static/posts/media/brutus-sherlock-writeup/task-6.png > site/blog/posts/media/brutus-sherlock-writeup/task-6.png
-	cat static/posts/media/brutus-sherlock-writeup/task-5.png > site/blog/posts/media/brutus-sherlock-writeup/task-5.png
-	cat static/posts/media/brutus-sherlock-writeup/task-4.png > site/blog/posts/media/brutus-sherlock-writeup/task-4.png
-	cat static/posts/media/brutus-sherlock-writeup/task-3.png > site/blog/posts/media/brutus-sherlock-writeup/task-3.png
-	cat static/posts/media/brutus-sherlock-writeup/login-time.png > site/blog/posts/media/brutus-sherlock-writeup/login-time.png
-	cat static/posts/media/brutus-sherlock-writeup/wtmp-dump.png > site/blog/posts/media/brutus-sherlock-writeup/wtmp-dump.png
-	cat static/posts/media/brutus-sherlock-writeup/wtmp-type.png > site/blog/posts/media/brutus-sherlock-writeup/wtmp-type.png
-	cat static/posts/media/brutus-sherlock-writeup/task-2.png > site/blog/posts/media/brutus-sherlock-writeup/task-2.png
-	cat static/posts/media/brutus-sherlock-writeup/task-1.png > site/blog/posts/media/brutus-sherlock-writeup/task-1.png
-	cat static/posts/media/brutus-sherlock-writeup/root-success.png > site/blog/posts/media/brutus-sherlock-writeup/root-success.png
-	cat static/posts/media/brutus-sherlock-writeup/overview.png > site/blog/posts/media/brutus-sherlock-writeup/overview.png
-	cat static/posts/media/brutus-sherlock-writeup/good-extract.png > site/blog/posts/media/brutus-sherlock-writeup/good-extract.png
-	cat static/posts/media/brutus-sherlock-writeup/brute-force-attempts.png > site/blog/posts/media/brutus-sherlock-writeup/brute-force-attempts.png
-	cat static/posts/media/brutus-sherlock-writeup/bad-extract.png > site/blog/posts/media/brutus-sherlock-writeup/bad-extract.png
+build: $(INDEX) $(PAGES) $(POSTS) $(RAW) $(COPIED) $(JSON) $(SITE)/resume/index.html
+
+# resume lives in its own repo, checked out at vendor/resume
+$(RESUME_SRC):
+	git submodule update --init vendor/resume
+
+$(SITE)/resume/index.html: $(RESUME_SRC) $(TPL)
+	@mkdir -p $(@D)
+	$(ASCIIDOCTOR) $(ADOC_FLAGS) -a browser-title=resume -a page-path=/resume/ \
+		-a heading-offset=1 -a content-id=resume-body \
+		-a extra-styles=/styles/resume-styles.css -o $@ $<
+
+# homepage lives at the root, not /index/
+$(INDEX): $(CONTENT)/index.adoc $(TPL)
+	@mkdir -p $(@D)
+	$(ASCIIDOCTOR) $(ADOC_FLAGS) -a page-path=/ -o $@ $<
+
+# blog posts -> /blog/post/<slug>/index.html
+$(SITE)/blog/post/%/index.html: $(CONTENT)/posts/%.adoc $(TPL)
+	@mkdir -p $(@D)
+	$(ASCIIDOCTOR) $(ADOC_FLAGS) $(POST_FLAGS) -a page-path=/blog/post/$*/ -o $@ $<
+
+# top-level pages -> /<name>/index.html
+$(SITE)/%/index.html: $(CONTENT)/%.adoc $(TPL)
+	@mkdir -p $(@D)
+	$(ASCIIDOCTOR) $(ADOC_FLAGS) -o $@ $<
+
+# hand-written HTML pages pass straight through
+$(SITE)/%/index.html: $(CONTENT)/%.html
+	@mkdir -p $(@D)
+	cp $< $@
+
+# static assets mirror their path under static/
+$(SITE)/%: $(STATIC)/%
+	@mkdir -p $(@D)
+	cp $< $@
+
+# post index consumed by /scripts/blog.js
+$(JSON): $(POST_SRC) tools/gen-posts-json.py
+	@mkdir -p $(@D)
+	python3 tools/gen-posts-json.py $(CONTENT)/posts > $@
 
 .PHONY: all
-all: build deploy
+all:
+	$(MAKE) rebuild
+	$(MAKE) deploy
+
+# full rebuild -- use this after deleting or renaming a post, since an
+# incremental build leaves the old output directory behind
+.PHONY: rebuild
+rebuild:
+	$(MAKE) clean
+	$(MAKE) build
 
 .PHONY: test
 test: build serve
 
 .PHONY: serve
 serve:
-	python -m http.server -d site
+	python -m http.server -d $(SITE)
 
-.PHONY: clean 
+.PHONY: clean
 clean:
-	rm -rf site
+	rm -rf $(SITE)
 
 .PHONY: deploy
-deploy:
-	rsync -avh --delete ./site/ /var/www/arthurtaft.net/
+deploy: build
+	rsync -avh --delete ./$(SITE)/ $(DEPLOY_DIR)
