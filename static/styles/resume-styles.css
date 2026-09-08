@@ -54,27 +54,30 @@
 }
 
 /* Title tier: the two-column title/date rows from
-   [cols="<,>", frame=none, grid=none], plus the Skills and Projects blocks. */
-#resume-body table.tableblock {
-    width: 95%;
-    margin-left: 5%;
-    border: none;
-    border-collapse: collapse;
-    margin-bottom: 0.2rem;
-}
+   [cols="<,>", frame=none, grid=none], plus the Skills and Projects blocks.
 
+   Mobile first: the rows stack, so a long job title and a long date range each
+   get a full line instead of fighting over one. The two-column layout is
+   restored at the 900px breakpoint, matching styles.css. */
+#resume-body table.tableblock,
+#resume-body tbody,
+#resume-body tr,
 #resume-body td.tableblock {
+    display: block;
+    width: auto;
     border: none;
     padding: 0;
-    vertical-align: top;
 }
 
-#resume-body td.halign-left {
-    text-align: left;
+#resume-body table.tableblock {
+    margin-left: 5%;
+    margin-bottom: 0.2rem;
+    border-collapse: collapse;
 }
 
+#resume-body td.halign-left,
 #resume-body td.halign-right {
-    text-align: right;
+    text-align: left;
 }
 
 #container #resume-body .main-text {
@@ -122,14 +125,38 @@
     background-color: var(--surface-1);
 }
 
-/* Asciidoctor writes an inline 50/50 colgroup for [cols="<,>"]. Rather than
-   guess a split, let auto table layout size the columns and keep the date on
-   one line -- the title column then takes whatever is left. */
-#resume-body colgroup col {
-    width: auto !important;
-}
+@media (min-width: 900px) {
+    /* restore the two-column title/date layout */
+    #resume-body table.tableblock {
+        display: table;
+        width: 95%;
+    }
 
-#resume-body td.halign-right {
-    white-space: nowrap;
-    padding-left: 1rem;
+    #resume-body tbody {
+        display: table-row-group;
+    }
+
+    #resume-body tr {
+        display: table-row;
+    }
+
+    #resume-body td.tableblock {
+        display: table-cell;
+        width: auto;
+        vertical-align: top;
+    }
+
+    /* Asciidoctor writes an inline 50/50 colgroup for [cols="<,>"]. Letting
+       the columns size from content keeps long job titles and long date
+       ranges each on one line. !important is needed to beat the generated
+       inline style on <col>. */
+    #resume-body colgroup col {
+        width: auto !important;
+    }
+
+    #resume-body td.halign-right {
+        text-align: right;
+        white-space: nowrap;
+        padding-left: 1rem;
+    }
 }

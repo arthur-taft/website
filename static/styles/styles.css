@@ -68,7 +68,7 @@ body {
 /* Navbar rules */
 #top-nav {
     display: flex;
-    flex-direction row;
+    flex-direction: row;
     margin-bottom: 1%;
     margin-left: 25%;
     margin-right: 25%;
@@ -319,4 +319,69 @@ a:visited {
 #article-content .dlist dd {
     color: var(--subtext-1);
     margin-left: 1.5rem;
+}
+
+/* ---------------------------------------------------------------------------
+ * Overflow containment
+ *
+ * #main-cont and #container are column flex boxes with align-items: center,
+ * so any child that sets align-self is sized to fit-content instead of being
+ * stretched to the container. Flex items also default to min-width: auto,
+ * which refuses to shrink below their min-content width. A long <pre> line, a
+ * wide image, or a nowrap table cell therefore widens the flex item past the
+ * viewport rather than being constrained by it -- and because the growth is
+ * inside a flex item, the page will not scroll to reach it.
+ *
+ * min-width: 0 lets these items shrink; max-width: 100% stops them growing.
+ * Together they push the overflow down to the element that should own it, so
+ * a code block scrolls inside its own box.
+ * ------------------------------------------------------------------------- */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* width: 100% plus 2% margins on each side is 104% of the viewport */
+body {
+    margin: 0;
+    padding: 2%;
+}
+
+#main-cont,
+#container,
+#top-nav,
+#title-div,
+#footer,
+#container .main-header,
+#container .main-subheading,
+#container .main-text,
+#container #article-content,
+#container #resume-body {
+    max-width: 100%;
+    min-width: 0;
+}
+
+/* wrap rather than widen the page */
+#top-nav,
+#top-nav .nav-list,
+#title-div {
+    flex-wrap: wrap;
+}
+
+/* long code lines scroll inside the block */
+#article-content .listingblock .content pre,
+#article-content .literalblock .content pre {
+    max-width: 100%;
+}
+
+#article-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* long URLs and other unbreakable tokens in prose */
+#container .main-text,
+#article-content p,
+#article-content li {
+    overflow-wrap: break-word;
 }
